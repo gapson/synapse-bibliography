@@ -1,0 +1,13 @@
+
+{% extends "synapse/base.html" %}
+
+
+{% block content %}
+
+	   <h1>Synapse Bulk Upload</h1>
+	   <br />
+	   <h2>Status</h2>
+	   {% for key, value in status.items %}
+	   <p>{{ key }}: {{ value }}</p>
+	   {% endfor %}
+{% endblock %}
