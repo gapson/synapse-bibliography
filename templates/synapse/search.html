@@ -1,0 +1,112 @@
+
+{% extends "synapse/base.html" %}
+{% block stylesheets %}
+        <link rel="stylesheet" type="text/css" href="/media/css/jquery.autocomplete.css">
+        {{ block.super }}
+{% endblock %}
+
+{% block js_libraries %}
+        <script type="text/javascript" src="/media/js/jquery-1.2.1.js"></script>
+
+        <script type="text/javascript" src="/media/js/jquery.bgiframe.js"></script>
+
+        <script type="text/javascript" src="/media/js/jquery.dimensions.js"></script>
+
+        <script type="text/javascript" src="/media/js/jquery.autocomplete.js"></script>
+
+        <script type="text/javascript">
+        $(document).ready(function() {
+
+            function formatItem(row) {
+
+                //var row = row.split("|");
+
+                return row[0];
+
+            }
+
+            function formatResult(row) {
+
+                return row[0];
+
+            }
+
+            $('#id_author').autocomplete('/ac/authors/',{matchContains: false, formatResult: formatResult, formatItem: formatItem, matchCase: false, selectFirst: false, multiple: true, multipleSeparator: '; ', autoFill: true, delay: 10, minChars: 2, scroll: false });
+
+            $('#id_journal').autocomplete('/ac/sources/',{matchContains: true, formatResult: formatResult, formatItem: formatItem, matchCase: false, selectFirst: false, multiple: true, multipleSeparator: '; ', autoFill: true, scroll: false });
+
+            function populateElement(selector, defvalue) {
+
+                if($(selector).attr('value') == null) {
+
+                    $(selector).attr('value', defvalue);
+
+                }
+
+              
+
+                $(selector).focus(function() {
+
+                    if($(selector).attr('value') == defvalue) {
+
+                        $(selector).attr('value', '');
+
+                    }
+
+                });
+
+                
+
+                $(selector).blur(function() {
+
+                    if($(selector).attr('value') == null || $(selector).attr('value') == "") {
+
+                        $(selector).attr('value', defvalue);
+
+                    }
+
+                });
+
+            }
+
+            populateElement('#id_author', 'Last Name, First');
+
+        });
+
+        </script>
+
+{% endblock %}
+
+{% block content %}
+	<!-- START: searchForm -->
+
+	<div id="searchForm">
+
+	   <h2>Complete One or More Fields</h2>
+			<form method="get" action="/documents/search/">
+                <table>
+
+                    <tr><th>{{ form.author.label_tag }}</th><td>{{ form.author }}<br><span class="subtle">{{ form.author.help_text }}</span></td>{% if form.author.errors %}<td>{{ form.author.errors }}</td>{% endif %}</tr>
+
+                    <tr><th>{{ form.keywords.label_tag }}</th><td>{{ form.keywords }}</td>{% if form.keywords.errors %}<td>{{ form.keywords.errors }}</td>{% endif %}</tr>
+
+                    <tr><th>{{ form.journal.label_tag }}</th><td>{{ form.journal }}<br><span class="subtle">{{ form.journal.help_text }}</span></td>{% if form.journal.errors %}<td>{{ form.journal.errors }}</td>{% endif %}</tr>
+
+                    {% if show_dmt %}<tr><th>{{ form.dmt.label_tag }}</th><td>{{ form.dmt }}</td>{% if form.dmt.errors %}<td>{{ form.dmt.errors }}</td>{% endif %}</tr>{% endif %}
+
+                    <tr><th>{{ form.year_start.label_tag }}</th><td>From {{ form.year_start }} To {{ form.year_end }}</td>{% if form.year_start.errors %} <td>{{ form.year_start.errors }} {% endif %}{% if form.year_end.errors %} {{ form.year_end.errors }}</td>{% endif %}</tr>
+
+                    <tr><th>{{ form.doc_type.label_tag }}</th><td>{{ form.doc_type }}</td>{% if form.doc_type.errors %}<td>{{ form.doc_type.errors }}</td>{% endif %}</tr>
+
+                </table>
+				<div class="clearLeft">&nbsp;</div>
+				<div class="clearBoth"><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" value="    Search    "></p><br></div>
+			</form>
+
+			{% if is_logged_in %}<p><a href="http://synapse.mskcc.org/bulkload/" title="Bulk Data Import Form">Bulk Data Import Form</a></p>{% endif %}
+
+	</div>
+
+	<!-- END: searchForm -->
+{% endblock %}
+

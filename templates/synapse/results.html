@@ -1,0 +1,187 @@
+
+{% extends "synapse/base.html" %}
+{% block stylesheets %}
+        <link rel="stylesheet" href="/media/js/themes/burgundygold/style.css" type="text/css" media="print, projection, screen">
+        <link rel="stylesheet" href="/media/css/superfish.css" type="text/css" media="projection, screen">
+        <link rel="stylesheet" href="/media/css/jqModal.css" type="text/css" media="projection, screen">
+        {{ block.super }}
+{% endblock %}
+{% block js_libraries %}
+        <script type="text/javascript" src="/media/js/jquery-1.2.1.js"></script>
+        <script type="text/javascript" src="/media/js/jqModal.js"></script>
+        <script type="text/javascript" src="/media/js/jquery.cookie.js"></script> 
+        <script type="text/javascript" src="/media/js/jquery.metadata.js"></script>
+        <script type="text/javascript" src="/media/js/jquery.columnmanager.js"></script> 
+        <script type="text/javascript" src="/media/js/jquery.tablesorter.js"></script>
+        <script type="text/javascript" src="/media/js/jquery.dimensions.js"></script>
+        <script type="text/javascript" src="/media/js/superfish.js"></script>
+        <script type="text/javascript"> 
+        $(document).ready(function()  
+        {  
+        
+            {% for doc in publications %} 
+            $("#dialog_{{ doc.id }}").jqm({ajax: '@href', toTop: true, trigger: '#trigger_{{ doc.id }}'});
+            {% endfor %} 
+        
+        
+            $('#results_tbl').columnManager({listTargetID:'targetcol', onClass: 'simpleon', offClass: 'simpleoff', {#saveState: true, hideInList: [1], #}colsHidden: [5, 6, 7]}); 
+
+            $("#results_tbl").tablesorter({widgets: ['zebra'], {#headers: { 0: { sorter: false}},#} sortList: [[3,1]]}); 
+            $("ul.nav").superfish(
+                { delay: 200 }
+            );
+            
+        });  
+        </script> 
+{% endblock %}
+{% block extra_space %}{% endblock %}
+{% block navigation %}
+<!-- START: navigation -->
+
+<div>
+        <ul class="nav">
+            <li>About <span class="Synapse_name">Synapse</span>
+                <ul>
+                    <li><a href="/what_is_synapse/">What is <span class="Synapse_name">Synapse</span>?</a></li>
+                    <li><a href="/comments/">Comments or Corrections?</a></li>
+                </ul>
+            </li>
+            <li>Quick Links
+                <ul>
+                    <li><a href="/pub_ranking_tools/">Publication Ranking Tools</a></li>
+                    <li><a href="/managing_your_refs/">Managing Your References</a></li>
+                    <li><a href="http://library.mskcc.org" target="_blank">Library Web site</a></li>
+                    <li><a href="http://www.ncbi.nlm.nih.gov/sites/entrez?otool=mskcclib&dr=abstract" target="_blank">PubMed</a></li>
+                </ul>
+            </li>
+        </ul>
+        <span id="new_search"><a href="/">New Search</a></span>
+
+</div>
+
+<!-- END: navigation -->
+{% endblock %}
+
+{% block content %}
+	<!-- START: searchResultsHeader-->
+	<div id="searchResultsUtilities">
+	   <h1 class="results_statement">Search Results:</h1>
+	   <p class="results_statement2">There are <span id="result_count">{{ result_count }}</span> results for your search for <span id="search_terms">{{ data }}</span>.</p>
+	   
+	   <br/>
+	   <p>
+	   <form enctype="multipart/form-data" method="get" action="">
+	        <p><label for="id_format">Export all results as:</label>
+	        <select name="format" id="id_format">
+                <option value="CSV">CSV (Comma-Separated Values) &nbsp; </option>
+<!--
+                <option value="PDF">PDF</option>
+                <option value="TXT">Plain text</option>
+                <option value="RIS">EndNote or RefWorks (RIS)</option>
+
+-->            </select>
+            
+            <input type="hidden" name="previous_uri" value="{{ uri }}"/>
+	       <input type="submit" value="Export" />
+            </p>
+	       
+        </form>
+    
+        <br>
+	   	<div id="targetcol" class="target"><p class="click_button">Click button to show or hide columns:</p></div>
+		
+		</div>
+
+	</div>
+	<!-- END: searchResultsHeader -->
+	<!-- START: searchResults -->
+	<div id="searchResults">
+		<div class="pagination">
+            {% if has_previous %}
+                <span class="previous"><a href="{{ uri }}&page={{ previous }}" title="Previous Page">&laquo; Previous</a></span>
+            {% else %}
+                <span class="prev-na">&laquo; Previous</span>
+            {% endif %}
+            {% for num in page_range %}
+              {% ifequal num page %}
+                <span class="paginate-current" title="Current Page">{{ num }}</span>
+              {% else %}
+                <span class="paginate-link"><a href="{{ uri }}&page={{ num }}" title="Page {{ num }}">{{ num }}</a></span>
+              {% endifequal %}
+            {% endfor %}
+    
+    
+            {% if has_next %}
+                <span class="next"><a href="{{ uri }}&page={{ next }}" title="Next Page">Next &raquo;</a></span>
+            {% else %}
+                <span class="next-na">Next &raquo;</span>
+            {% endif %}
+            
+		</div>
+	   <table id="results_tbl" class="tablesorter"  cellpadding="0" cellspacing="1">
+          <thead>
+            <tr>
+{#                <td class="small"><a href="#">Select All</a></td> #}
+                <td>Title</td>
+                <td>Author(s)</td>
+                <td>Source</td>
+                <td>Year</td>
+                <td>Vol/Issue/Pages</td>
+                <td>DMT</td>
+                <td>Document Type</td>
+            </tr>
+          </thead>
+          <tfoot>
+            <tr>
+{#                <td>Select All</td> #}
+                <td>Title</td>
+                <td>Author(s)</td>
+                <td>Source</td>
+                <td>Year</td>
+                <td>Vol/Issue/Pages</td>
+                <td>DMT</td>
+                <td>Document Type</td>
+            </tr>
+          </tfoot>
+          <tbody>
+           {% for doc in publications %}
+            <tr>
+{#              <td>{{ forloop.counter|add:page_offset }}<br><input type="checkbox" id="doc_id_{{ doc.id }}" value="{{ doc.id }}" name="doc_id_{{ doc.id }}"></input></td> #}
+              <td><a title="{{ doc.title }}" href="/document/{{ doc.id }}/" id="trigger_{{ doc.id }}" class="jqModal">{{ doc.title }}</a></td>
+              <div class="jqmWindow" id="dialog_{{ doc.id }}"><p>Please wait...<img src="/media/indicator.gif" alt="Image of loading indicator"></p></div>
+              <td>{{ doc.author_names }}</td>
+              <td>{{ doc.source.name }}</td>
+              <td>{{ doc.publish_year }}</td>
+              <td>{{ doc.volume|default:"-" }}/{{ doc.issue|default:"-" }}/{{ doc.page_range|default:"-" }}</td>
+              <td>{{ doc.dmt.name }}</td>
+              <td>{{ doc.document_type }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+		<div class="pagination">
+            {% if has_previous %}
+                <span class="previous"><a href="{{ uri }}&page={{ previous }}" title="Previous Page">&laquo; Previous</a></span>
+            {% else %}
+                <span class="prev-na">&laquo; Previous</span>
+            {% endif %}
+            {% for num in page_range %}
+              {% ifequal num page %}
+                <span class="paginate-current" title="Current Page">{{ num }}</span>
+              {% else %}
+                <span class="paginate-link"><a href="{{ uri }}&page={{ num }}" title="Page {{ num }}">{{ num }}</a></span>
+              {% endifequal %}
+            {% endfor %}
+    
+    
+            {% if has_next %}
+                <span class="next"><a href="{{ uri }}&page={{ next }}" title="Next Page">Next &raquo;</a></span>
+            {% else %}
+                <span class="next-na">Next &raquo;</span>
+            {% endif %}
+            
+		</div>
+
+	</div>
+	<!-- END: searchResults -->
+{% endblock %}

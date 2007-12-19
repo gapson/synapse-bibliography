@@ -1,0 +1,167 @@
+/** Global Reset **/
+* {	padding:0; margin:0; }
+body { font-family:'trebuchet ms', verdana, arial; padding:0; width: 100%; font-size: 11pt; }
+h1, h2, h3, h4, h5, h6, p, pre, blockquote, form, label, ul, ol, dl, fieldset, address{ margin:0; }
+li, dd, blockquote { margin-left: 10px; }
+
+p {padding-bottom:1em; }
+ul {margin-left:3em; margin-right:3em; padding-bottom:1em; }
+/*
+fieldset { padding: 0; border: none; }
+
+*/
+/* header styles */
+/*h1 { font-size: 1.4em; }
+h2 { font-size: 1.2em; }*/
+h1 { font-size: 1.4em; padding-bottom:1em; }
+h2 { font-size: 1.2em; padding-bottom:1em; }
+h3 { font-size: 1em; padding-bottom:.5em; padding-left:2em; }
+
+
+/* font coloration */
+h1, h2, blockquote, label { color: #541805; }
+a:hover { color: #708CBA; text-decoration: none; }
+a:link {color: #541805; }
+
+/* image borders */
+img { border: none; }
+
+/* ordered list styles */
+ol { list-style: none; }
+li { margin-bottom: 10px; }
+ol.left { float: left; text-align: right;}
+ol.right { float: left; }
+
+/* image floats */
+img.right { float: right; }
+img.left { float: left; }
+
+/* masthead */
+div#mastHead { margin: 0px 0px 0px 0px; }
+div#mastHead div#InsideMSKCC { margin-left: 35px; }
+div#mastHead img#mskcc_logo { margin-right: 15px; margin-bottom: 6px; }
+div.logo_bar { background-color: #541805; 
+    clear: both; 
+    z-index: -500; 
+/*     border-top: solid 3px #541805; border-bottom: solid 3px #541805;  */
+    font-size: 0.75em; 
+    }
+
+/* the navigation */
+div#navigation { float: left; width: 15%; border: solid 2px #541805; margin: 0px 10px 20px 10px;}
+div#navigation a { color: #541805; }
+div#navigation a:hover { color: #708CBA; text-decoration: none; }
+
+
+/* div#navigation a:hover { color: #c9b762; text-decoration: none;  } */
+div.navigation_title { color: #541805; text-align: left; background-color: #c9b762; font-weight: 800; font-size: 1.2em; padding-left: 5px; margin-bottom: 10px; }
+div#navigation div.navigation_title a#title_link { color: #541805; }
+div#navigation div.navigation_title a:hover { color: #708CBA; text-decoration: none; }
+
+/* right pane */
+div#rightPane { width: 80%; float: left;}
+
+/* main content */
+div#main_content a { color: #541805; }
+div#main_content a:hover { color: #708CBA; text-decoration: none; }
+div#main_content table tr th { text-align: right; }
+
+/* the form */
+div#searchForm table tr th { text-align: right; }
+div#searchForm h2 {font-size: 1.4em; padding-bottom:0em; text-align: left; margin: 0px 0px 10px 10px;  }
+div#searchForm th, td { padding-top: 10px; }
+div#searchForm ul li {display: inline; }
+div#searchForm td {
+    padding-left: 30px;
+    vertical-align: top;
+    }
+span.subtle { font-size: small; color: #541805; }
+
+/* search results utilities */
+/* div#searchResultsUtilities { border: dashed 2px #333333; } */
+div#searchResultsUtilities { padding-left: 35px; }
+div#searchResultsUtilities ol li { float: left; margin: 0px 5px 0px 0px; }
+div#searchResultsUtilities ul li { display: inline; }
+div#searchResultsUtilities ul li.simpleon { padding-top: 0px; color: #541805; background-color: #c9b762; padding: 5px; margin: 5px; font-size: large; clear: both; }
+div#searchResultsUtilities ul li.simpleoff { color: #541805; background-color: #708CBA; padding: 5px; margin: 5px; font-size: small; clear: both; }
+
+/*border: inset #000 2px;*/
+/* border: outset #000 2px; */
+/* search results */
+
+div#searchResults { 
+    clear: both; 
+    padding: 0px 10px 0px 10px;
+    }
+/* JS added span classes for search results wording to style the components */ 
+h1.results_statement {font-size:1.75em; color:#541805; font-weight:bold; display: inline; } 
+p.results_statement2 {font-size:1.25em; font-style:italic; display: inline; } 
+p.click_button {font-size:1.35em; color:#541805; font-weight:bold;} 
+
+ 
+/* div#searchResults { clear: both; height: 500px; overflow: auto; padding: 0px 10px 0px 10px; } */
+
+#search_terms, #result_count { color: #541805; font-weight: 800; }
+
+div#searchResults table tbody td { color: #541805; }
+div#searchResults table tbody td a { color: #541805; }
+div#searchResults table tbody td a:hover { color: #708CBA; text-decoration: none; }
+div#searchResults table thead tr td a { color: #541805; } 
+div#searchResults table thead tr td a:hover { color: #708CBA; text-decoration: none; }
+
+
+div#searchResults table thead tr td { 
+    color: #541805;
+    border-left: 1px solid #541805;
+    }
+div#searchResults table tfoot tr td { 
+    color: #541805;
+    border-left: 1px solid #541805;
+    }
+
+
+
+
+
+/* footer */
+div#footer { clear: both; text-align: center; color: #996600; margin: 10px 0px 10px 0px; font-size: 0.75em; }
+div.footerEmail { color: #996600; text-align: right; background-color: #541805; padding-right: 15px; }
+div#footer a { color: #fff; }
+div#footer a:hover { color: #708CBA; text-decoration: none; }
+div#footer a#copyright_link { color: #541805; }
+div#footer a:hover#copyright_link { color: #708CBA; text-decoration: none; }
+div#copyright { text-align: left; float: left; padding: 15px; }
+div#address { text-align: right; float: right; padding: 15px; }
+div#footer hr { color: #c9b762; }
+div#ski_links { text-align: left; float: left; padding: 15px; }
+div#msk_links { text-align: right; float: right; padding: 0px 15px 15px 15px; }
+div#ski_links a, div#msk_links a { color: #996600; }
+div#ski_links a:hover, div#msk_links a:hover { color: #708CBA; text-decoration: none; }
+
+
+/* clear floats */
+div.clearLeft {clear: left;}
+div.clearRight {clear: right;}
+div.clearBoth {clear: both;}
+
+a:hover { color: #708CBA; text-decoration: none; }
+
+span#new_search { 
+    float: right;
+    background-color: #541805;
+    padding: 0.5em;
+    }
+span#new_search a {
+    color: #708cba;
+    }
+
+span.Synapse_name {font-style:italic; font-weight:bold;}
+
+/* pagination styles */
+div.pagination { padding: 0px 10px 0px 10px; }
+span.previous {}
+span.prev-na {}
+span.paginate-current {}
+span.paginate-link {}
+span.next {}
+span.next-na {}

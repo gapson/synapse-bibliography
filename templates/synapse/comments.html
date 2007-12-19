@@ -1,0 +1,22 @@
+{% extends "synapse/base.html" %}
+
+{% block content %}
+	<!-- START: main content -->
+	<div id="main_content">
+	   
+	   {% if msg %}<h2>{{ msg }}</h2>{% endif %}
+
+	   {% if form %}<form enctype="multipart/form-data" method="post" action="">
+	       <table>	
+            {{ form }}
+            </table>
+	       <input type="submit" value="Submit" />
+	   </form>{% endif %}
+	
+	<br><br>
+	
+	
+	</div>
+	<!-- END: main content -->
+	
+{% endblock %}

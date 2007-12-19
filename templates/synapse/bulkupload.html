@@ -1,0 +1,11 @@
+
+{% extends "synapse/base.html" %}
+
+
+{% block content %}
+	   <h1>Synapse Bulk Upload</h1>
+	   <form enctype="multipart/form-data" method="post" action="">
+	       <table>{{ form }}</table>
+	       <input type="submit" />
+	   </form>
+{% endblock %}
