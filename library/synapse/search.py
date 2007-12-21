@@ -71,7 +71,7 @@ def search_all(search_data):
         journals = map(string.strip, journals)
         print "journals:", journals
         for journal in journals:
-            q = q & Q(source__name__icontains=journal)
+            q = q & Q(source__name__iexact=journal)
             
     if search_data['dmt'] and not search_data['dmt'] == '0':
         q = q & Q(dmt__id__exact=search_data['dmt'])
