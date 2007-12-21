@@ -96,7 +96,7 @@
 
                     <tr><th>{{ form.year_start.label_tag }}</th><td>From {{ form.year_start }} To {{ form.year_end }}</td>{% if form.year_start.errors %} <td>{{ form.year_start.errors }} {% endif %}{% if form.year_end.errors %} {{ form.year_end.errors }}</td>{% endif %}</tr>
 
-                    <tr><th>{{ form.doc_type.label_tag }}</th><td>{{ form.doc_type }}</td>{% if form.doc_type.errors %}<td>{{ form.doc_type.errors }}</td>{% endif %}</tr>
+                    <tr><th>{{ form.doc_type.label_tag }}</th><td>{% autoescape off %}{{ form.doc_type }}{% endautoescape %}</td>{% if form.doc_type.errors %}<td>{{ form.doc_type.errors }}</td>{% endif %}</tr>
 
                 </table>
 				<div class="clearLeft">&nbsp;</div>
