@@ -86,7 +86,7 @@
 			<form method="get" action="/documents/search/">
                 <table>
 
-                    <tr><th>{{ form.author.label_tag }}</th><td>{{ form.author }}<br><span class="subtle">{{ form.author.help_text }}</span></td>{% if form.author.errors %}<td>{{ form.author.errors }}</td>{% endif %}</tr>
+                    <tr><th>{{ form.author.label_tag }}</th><td>{{ form.author }}<br><span class="subtle">{% autoescape off %}{{ form.author.help_text }}{% endautoescape %}</span></td>{% if form.author.errors %}<td>{{ form.author.errors }}</td>{% endif %}</tr>
 
                     <tr><th>{{ form.keywords.label_tag }}</th><td>{{ form.keywords }}</td>{% if form.keywords.errors %}<td>{{ form.keywords.errors }}</td>{% endif %}</tr>
 
