@@ -148,7 +148,7 @@
             <tr>
 {#              <td>{{ forloop.counter|add:page_offset }}<br><input type="checkbox" id="doc_id_{{ doc.id }}" value="{{ doc.id }}" name="doc_id_{{ doc.id }}"></input></td> #}
               <td><a title="{{ doc.title }}" href="/document/{{ doc.id }}/" id="trigger_{{ doc.id }}" class="jqModal">{{ doc.title }}</a></td>
-              <div class="jqmWindow" id="dialog_{{ doc.id }}"><p>Please wait...<img src="/media/indicator.gif" alt="Image of loading indicator"></p></div>
+              <div class="jqmWindow" id="dialog_{{ doc.id }}"><p>Please wait...<img src="/media/images/indicator.gif" alt="Image of loading indicator"></p></div>
               <td>{{ doc.author_names }}</td>
               <td>{{ doc.source.name }}</td>
               <td>{{ doc.publish_year }}</td>

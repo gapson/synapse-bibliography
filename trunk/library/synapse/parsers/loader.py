@@ -18,6 +18,7 @@
 import string
 
 from django.db.models import Q
+from django.core.exceptions import MultipleObjectsReturned
 
 from library.synapse.models import Publisher, Source, Document, Keyword, Publication
 from library.synapse.models import DiseaseManagementTeam, Institution, NameOrder, Employee
@@ -47,7 +48,7 @@ def create_source(record, publisher):
             try:
                 source, source_created = Source.objects.get_or_create(name=record.source,
                                                                       defaults={'publication_type':record.publication_type})
-            except AssertionError:
+            except MultipleObjectsReturned:
                 source = Source.objects.filter(name=record.source)[0]
             
 

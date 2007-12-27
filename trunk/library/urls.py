@@ -22,5 +22,6 @@ urlpatterns = patterns('',
      (r'^managing_your_refs/$', 'library.synapse.views.myr'),
      (r'^pub_ranking_tools/$', 'library.synapse.views.prt'),
      (r'^what_is_synapse/$', 'library.synapse.views.wis'),
-     (r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': '/Users/herndonp/Projects/Work/django/library/media'} ),
+#      (r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': '/Users/herndonp/Projects/Work/django/library/media'} ),
+     (r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': '/Users/herndonp/Projects/Work/django/googlesvn/synapse-bibliography/library/media'} ),
 )
