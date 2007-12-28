@@ -90,3 +90,8 @@ def CSV(results):
 
         
     return response
+    
+    
+def atom(results):
+    response = HttpResponse(mimetype='application/xml+atomfeed')  #Read up on syndication framework, also read up on Atom format
+    response['Content-Disposition'] = 'attachment; filename=synapse_results.csv'

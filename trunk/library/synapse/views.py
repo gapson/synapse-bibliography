@@ -36,6 +36,23 @@ from library.synapse.models import DiseaseManagementTeam, Document, Publication,
 from library.synapse.forms import BulkLoadForm, AdvancedSearchForm, ExportForm, DMT, CommentForm
 from library.synapse import exporters
 
+import iplib
+
+
+def is_internal(request):
+    if not request.META.has_key('REMOTE_ADDR'):
+        return False
+    else:
+        main = iplib.CIDR('140.163.0.0/16')
+        zrc = iplib.CIDR('172.16.0.0/12')
+        vpn = iplib.CIDR('192.168.0.0/16')
+        addr = request.META['REMOTE_ADDR']
+        
+        if main.is_valid_ip(addr) or zrc.is_valid_ip(addr) or vpn.is_valid_ip(addr):
+            return True
+        else:
+            return False
+
 
 @staff_member_required        
 def bulk_upload(request):
@@ -49,10 +66,10 @@ def bulk_upload(request):
             # parser is a file parser instance of appropriate type that's been passed the content
             dispatcher = BulkParserDispatcher(file_type, content, year, dmt)
             status = dispatcher.parser.parse()
-            return render_to_response('synapse/duplicates.html', Context({'status':status}))
+            return render_to_response('synapse/duplicates.html', Context({'status':status, 'is_internal':is_internal(request)}))
     else:
         form = BulkLoadForm()
-    return render_to_response('synapse/bulkupload.html', {'form': form})
+    return render_to_response('synapse/bulkupload.html', {'form': form, 'is_internal':is_internal(request)})
     
 def duplicates(request):
     return render_to_response('synapse/duplicates.html', {'file_type': 'nothing at this time',
@@ -139,21 +156,22 @@ def search(request):
                                                                           'previous': previous,
                                                                           'page_offset': page_offset,
                                                                           'uri': full_uri,
-                                                                          'result_count': result_count}))
+                                                                          'result_count': result_count,
+                                                                          'is_internal': is_internal(request)}))
             else:
                 form = AdvancedSearchForm()
-                return render_to_response('synapse/search.html', {'form': form, 'show_dmt': False})
+                return render_to_response('synapse/search.html', {'form': form, 'show_dmt': False, 'is_internal': is_internal(request)})
 
 
 @login_required
 def search_form(request):
     form = AdvancedSearchForm()
-    return render_to_response('synapse/search.html', {'form': form, 'show_dmt': False})
+    return render_to_response('synapse/search.html', {'form': form, 'show_dmt': False, 'is_internal': is_internal(request)})
 
 @login_required
 def search_dmt_form(request):
     form = AdvancedSearchForm()
-    return render_to_response('synapse/search.html', {'form': form, 'show_dmt': True})
+    return render_to_response('synapse/search.html', {'form': form, 'show_dmt': True, 'is_internal': is_internal(request)})
 
 
 @login_required
@@ -197,18 +215,18 @@ def comments(request):
             try:
                 send_mail(subject, comment, address, ['zzPDL_MIS_Synapse@mskcc.org', 'herndonp@mskcc.org'])
             except BadHeaderError:
-                return render_to_reponse('synapse/comments.html', {'form': form, 'msg':'Invalid header found.'})
+                return render_to_reponse('synapse/comments.html', {'form': form, 'msg':'Invalid header found.', 'is_internal': is_internal(request)})
             return HttpResponseRedirect('/comments/thanks/')
         else:
-            return render_to_response('synapse/comments.html', {'form': form, 'msg':'Please enter all fields correctly.'})
+            return render_to_response('synapse/comments.html', {'form': form, 'msg':'Please enter all fields correctly.', 'is_internal': is_internal(request)})
     else:
         form = CommentForm()
-        return render_to_response('synapse/comments.html', {'form': form})
+        return render_to_response('synapse/comments.html', {'form': form, 'is_internal': is_internal(request)})
         
 @login_required
 def comments_thanks(request):
     msg = 'Thanks for your interest.  A library staff member will address your concerns as soon as possible.'
-    return render_to_response('synapse/comments.html', {'msg':msg})
+    return render_to_response('synapse/comments.html', {'msg':msg, 'is_internal': is_internal(request)})
 
 @login_required
 def autocomplete_authors(request):
@@ -265,12 +283,13 @@ def full_document(request, document_id):
 
 @login_required
 def myr(request):
-    return render_to_response('synapse/managing_your_refs.html')
+    return render_to_response('synapse/managing_your_refs.html', {'is_internal': is_internal(request)})
     
 @login_required
 def prt(request):
-    return render_to_response('synapse/pub_ranking_tools.html')
+    return render_to_response('synapse/pub_ranking_tools.html', {'is_internal': is_internal(request)})
     
 @login_required
 def wis(request):
-    return render_to_response('synapse/what_is_synapse.html')
+    addr = request.META['REMOTE_ADDR']
+    return render_to_response('synapse/what_is_synapse.html', {'is_internal': is_internal(request)})
