@@ -93,4 +93,5 @@ def CSV(results):
     
     
 def atom(results):
-    return response
+#     return response
+    pass
