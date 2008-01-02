@@ -32,6 +32,9 @@ cp1252 = {
     u"\x9C": u"\u0153", # LATIN SMALL LIGATURE OE
     u"\x9E": u"\u017E", # LATIN SMALL LETTER Z WITH CARON
     u"\x9F": u"\u0178", # LATIN CAPITAL LETTER Y WITH DIAERESIS
+    u"\xc2": u"?",      # probably copyright symbol, but haven't done the research
+    u"\xce": u"?",      # no idea
+    u"\xc3": u"?",      # no idea
 }
 
 
