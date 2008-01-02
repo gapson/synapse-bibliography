@@ -32,12 +32,9 @@ li { margin-bottom: 10px; }
 ol.left { float: left; text-align: right;}
 ol.right { float: left; }
 
-/* image floats */
-img.right { float: right; }
-img.left { float: left; }
 
 /* masthead */
-div#mastHead { margin: 0px 0px 0px 0px; }
+div#mastHead { margin: 0px 0px 0px 0px; padding-top: 10px; }
 div#mastHead div#InsideMSKCC { margin-left: 35px; }
 div#mastHead img#mskcc_logo { margin-right: 15px; margin-bottom: 6px; }
 div.logo_bar { background-color: #541805; 
@@ -65,6 +62,21 @@ div#rightPane { width: 80%; float: left;}
 div#main_content a { color: #541805; }
 div#main_content a:hover { color: #708CBA; text-decoration: none; }
 div#main_content table tr th { text-align: right; }
+
+/* announcements */
+div#announcements {
+    float: right;
+    border: solid 10px #541805;
+    padding: 10px;
+    }
+div#announcements h3 {
+    padding-left: 0em;
+    }
+    
+    
+/* image floats */
+img.right { float: right !important; }
+img.left { float: left; }
 
 /* the form */
 div#searchForm table tr th { text-align: right; }
