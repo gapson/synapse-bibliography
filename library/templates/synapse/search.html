@@ -71,8 +71,8 @@
 
             populateElement('#id_author', 'Last Name, First');
             
-            $("#reset").click(function() {
-                $("form")[0].reset();
+            $(":reset").click(function() {
+                $("#search_form")[0].reset();
                 populateElement('#id_author', 'Last Name, First');
                 return false;
             });
@@ -89,7 +89,7 @@
 	<div id="searchForm">
 
 	   <h2>Complete One or More Fields</h2>
-			<form method="get" action="/documents/search/">
+			<form id="search_form" method="get" action="/documents/search/">
                 <table>
 
                     <tr><th>{{ form.author.label_tag }}</th><td>{{ form.author }}<br><span class="subtle">{% autoescape off %}{{ form.author.help_text }}{% endautoescape %}</span></td>{% if form.author.errors %}<td>{{ form.author.errors }}</td>{% endif %}</tr>
@@ -106,7 +106,7 @@
 
                 </table>
 				<div class="clearLeft">&nbsp;</div>
-				<div class="clearBoth"><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" value="    Search    ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://library.mskcc.org" id="reset">Clear</a></p><br></div>
+				<div class="clearBoth"><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" value="    Search    ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="reset" value="    Clear    "></p><br></div>
 			</form>
 
 			{% if is_logged_in %}<p><a href="http://synapse.mskcc.org/bulkload/" title="Bulk Data Import Form">Bulk Data Import Form</a></p>{% endif %}
