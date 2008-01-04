@@ -16,7 +16,10 @@
 #     along with Synapse.  If not, see <http://www.gnu.org/licenses/>.
 
 import csv
+import string
+
 from django.http import HttpResponse
+from django.template.loader import render_to_string
 
 def CSV(results):
     response = HttpResponse(mimetype='text/csv')
@@ -95,3 +98,90 @@ def CSV(results):
 def atom(results):
 #     return response
     pass
+    
+class RISRecord(object):
+    def __init__(self, result):
+        self.TY = _map_document_type_to_TY(result.document_type)
+        self.id = result.id
+        self.title = result.title
+        self.authors = [] #must populate this list
+        if ';' in result.author_names:
+            self.authors.extend(result.author_names.split(';'))
+        elif result.author_names.count(',') > 1:
+            self.authors.extend(result.author_names.split(','))
+        # for author in authors, map(str.strip(), author), if ', ' not in author and ' ' in author, replace ' ' with ', '
+        self.authors = [author.strip() for author in self.authors]
+        
+        a = []
+        for author in self.authors:
+            if ', ' not in author and ' ' in author:
+                author = author.replace(' ', ', ')
+            a.append(author)
+        if a:
+            self.authors = a
+
+
+
+#         print self.authors
+        self.publish_year = _format_year(result.publish_year)
+        self.abstract = result.abstract
+        self.keywords = result.keyword_set.all()
+        if result.source:
+            self.source = result.source.name
+            self.is_number = result.fixed_is_number
+            try:
+                self.publisher = result.source.publisher_set.all()[0].name
+            except IndexError:
+                self.publisher = ''
+        else:
+            self.source = ''
+            self.is_number = ''
+            self.publisher = ''
+        self.volume = result.volume
+        self.issue = result.issue
+        self.start_page = result.spage
+        try:
+            self.end_page = result.page_range.split('-')[1]
+        except IndexError:
+            self.end_page = ''
+
+def _map_document_type_to_TY(doc_type):
+    doc_type_map = {
+    u"Article": u"JOUR",
+    u"Conference Paper": u"CONF",
+    u"Review Article": u"JOUR",
+    u"Short Survey": u"JOUR",
+    u"Editorial": u"JOUR",
+    u"Book Chapter": u"CHAP",
+    u"Book": u"BOOK",
+    u"Article in Press": u"INPR",
+    }
+    return doc_type_map.get(doc_type, u"GEN")
+    
+def _format_year(year):
+    #need to write code to make sure year is 4 digits
+    yr = ''
+    if year:
+        assert len(str(year)) == 4
+        assert str(year).isdigit()
+        yr = "".join((str(year), "///"))
+    return yr
+    
+def _ris_format(results):
+    ris_results = []
+    for doc in results:
+        ris_results.append(RISRecord(doc))
+    return ris_results
+        
+
+
+
+def RIS(results):
+    #generate proper RIS formatted results
+    ris_results = _ris_format(results)
+    ris = render_to_string('synapse/ris_export.txt', {'results': ris_results})
+    
+    response = HttpResponse(mimetype='application/x-Research-Info-Systems')
+    response['Content-Disposition'] = 'attachment; filename=synapse_results.ris'
+    response.write(ris)
+    return response

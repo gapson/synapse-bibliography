@@ -1,0 +1,17 @@
+{% autoescape off %}{% for result in results %}
+TY  - {{ result.TY }}
+ID  - {{ result.id }}
+T1  - {{ result.title }}{% for author in result.authors %}
+A1  - {{ author }}{% endfor %}{% if result.publish_year %}
+Y1  - {{ result.publish_year }}{% endif %}{% if result.abstract %}
+N2  - {{ result.abstract }}{% endif %}{% if result.keywords %}{% for keyword in result.keywords %}
+KW  - {{ keyword.term }}{% endfor %}{% endif %}{% if result.source %}
+JF  - {{ result.source }}{% endif %}{% if result.volume %}
+VL  - {{ result.volume }}{% endif %}{% if result.issue %}
+IS  - {{ result.issue }}{% endif %}{% if result.start_page %}
+SP  - {{ result.start_page }}{% endif %}{% if result.end_page %}
+EP  - {{ result.end_page }}{% endif %}{% if result.publisher %}
+PB  - {{ result.publisher }}{% endif %}{% if result.is_number %}
+SN  - {{ result.is_number }}{% endif %}
+ER  - 
+{% endfor %}{% endautoescape %}

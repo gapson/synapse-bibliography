@@ -186,8 +186,8 @@ def export(request, format=None, kwargs=None):
                 if item:
                     do_search = True
             if do_search:
-                print form.cleaned_data['doc_type']
-                print type(form.cleaned_data['doc_type'])
+#                 print form.cleaned_data['doc_type']
+#                 print type(form.cleaned_data['doc_type'])
                 results = search_all(form.cleaned_data)
         else:
             return HttpResponseRedirect('/')
