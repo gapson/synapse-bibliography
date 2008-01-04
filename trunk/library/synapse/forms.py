@@ -121,7 +121,7 @@ class BulkLoadForm(forms.Form):
 
 
 class AdvancedSearchForm(forms.Form):
-    author = forms.CharField(required=False, help_text='Separate multiple authors with a semi-colon, i.e.:<br>Varmus, Harold; Sawyers, Charles', widget=forms.TextInput(attrs={'autocomplete':'off', 'title':'MSKCC authors'}))
+    author = forms.CharField(required=False, help_text='Separate multiple authors with a semi-colon', widget=forms.TextInput(attrs={'autocomplete':'off', 'title':'MSKCC authors'}))
     keywords = forms.CharField(required=False, widget=forms.TextInput(attrs={'autocomplete':'off', 'title':'Searches article title, abstract and article keywords'}))
     journal = forms.CharField(required=False, label='Source', help_text='Enter Journal or Book Title', widget=forms.TextInput(attrs={'autocomplete':'off', 'title':'Includes titles of journals, books, and book series'}))
     
