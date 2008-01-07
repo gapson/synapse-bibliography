@@ -104,37 +104,8 @@ class RISRecord(object):
         self.TY = _map_document_type_to_TY(result.document_type)
         self.id = result.id
         self.title = result.title
-        self.authors = [] #must populate this list
-        if ';' in result.author_names:
-            self.authors.extend(result.author_names.split(';'))
-        elif result.author_names.count(',') > 1:
-            self.authors.extend(result.author_names.split(','))
-        elif result.author_names.count(',') == 1:
-            # if a period is in the next chunk, or it is all caps, it is a first name
-            last, first = result.author_names.split(',')
-            if first.isupper() or '.' in first:
-                # it's a first name, so treat as a single name
-                self.authors.append(result.author_names)
-            else:
-                # treat as two names
-                self.authors.append(last)
-                self.authors.append(first)
-        else:
-            self.authors.append(result.author_names)
-        # for author in authors, map(str.strip(), author), if ', ' not in author and ' ' in author, replace ' ' with ', '
-        self.authors = [author.strip() for author in self.authors]
-        
-        a = []
-        for author in self.authors:
-            if ', ' not in author and ' ' in author:
-                author = author.replace(' ', ', ')
-            a.append(author)
-        if a:
-            self.authors = a
+        self.authors = _ris_format_authors(result)
 
-
-
-#         print self.authors
         self.publish_year = _format_year(result.publish_year)
         self.abstract = result.abstract
         self.keywords = result.keyword_set.all()
@@ -156,6 +127,71 @@ class RISRecord(object):
             self.end_page = result.page_range.split('-')[1]
         except IndexError:
             self.end_page = ''
+
+class NLMRecord(object):
+    def __init__(self, result):
+        self.title = result.title.rstrip('.')
+        self.authors = _nlm_format_authors(result)
+        self.publish_year = result.publish_year
+        if result.source:
+            self.source = result.source.name
+        self.publish_date = result.publish_date
+        self.volume = result.volume
+        self.issue = result.issue
+        self.page_range = result.page_range
+        
+def _nlm_format_authors(result):
+    authors = []
+    if ';' in result.author_names:
+        authors.extend(result.author_names.split(';'))
+    elif result.author_names.count(',') > 1:
+        authors.extend(result.author_names.split(','))
+    elif result.author_names.count(',') == 1:
+        last, first = result.author_names.split(',')
+        if ' ' in last:
+            authors.append(last)
+            authors.append(first)
+        else:
+            authors.append(result.author_names)
+    else:
+        authors.append(result.author_names)
+        
+    authors = [author.strip() for author in authors]
+    authors = [author.replace('.', '') for author in authors]
+    authors = [author.replace(',', '') for author in authors]
+    
+    authors = ', '.join(authors)
+    return authors
+
+def _ris_format_authors(result):
+    authors = []
+    if ';' in result.author_names:
+        authors.extend(result.author_names.split(';'))
+    elif result.author_names.count(',') > 1:
+        authors.extend(result.author_names.split(','))
+    elif result.author_names.count(',') == 1:
+        # if a period is in the next chunk, or it is all caps, it is a first name
+        last, first = result.author_names.split(',')
+        if ' ' in last:
+            authors.append(last)
+            authors.append(first)
+        else:
+            authors.append(result.author_names)
+    else:
+        authors.append(result.author_names)
+    # for author in authors, map(str.strip(), author), if ', ' not in author and ' ' in author, replace ' ' with ', '
+    authors = [author.strip() for author in authors]
+    
+    a = []
+    for author in authors:
+        if ', ' not in author and ' ' in author:
+            author = author.replace(' ', ', ')
+        a.append(author)
+    if a:
+        authors = a
+        
+    return authors
+
 
 def _map_document_type_to_TY(doc_type):
     doc_type_map = {
@@ -185,6 +221,11 @@ def _ris_format(results):
         ris_results.append(RISRecord(doc))
     return ris_results
         
+def _nlm_format(results):
+    nlm_results = []
+    for doc in results:
+        nlm_results.append(NLMRecord(doc))
+    return nlm_results
 
 
 
@@ -196,4 +237,15 @@ def RIS(results):
     response = HttpResponse(mimetype='application/x-Research-Info-Systems')
     response['Content-Disposition'] = 'attachment; filename=synapse_results.ris'
     response.write(ris)
+    return response
+
+def NLM(results):
+    # generate proper NLM formatted results
+    nlm_results = _nlm_format(results)
+    
+    nlm = render_to_string('synapse/nlm_export.txt', {'results': nlm_results})
+    
+    response = HttpResponse(mimetype='text/plain')
+    response['Content-Disposition'] = 'attachment; filename=synapse_results.txt'
+    response.write(nlm)
     return response
