@@ -109,6 +109,18 @@ class RISRecord(object):
             self.authors.extend(result.author_names.split(';'))
         elif result.author_names.count(',') > 1:
             self.authors.extend(result.author_names.split(','))
+        elif result.author_names.count(',') == 1:
+            # if a period is in the next chunk, or it is all caps, it is a first name
+            last, first = result.author_names.split(',')
+            if first.isupper() or '.' in first:
+                # it's a first name, so treat as a single name
+                self.authors.append(result.author_names)
+            else:
+                # treat as two names
+                self.authors.append(last)
+                self.authors.append(first)
+        else:
+            self.authors.append(result.author_names)
         # for author in authors, map(str.strip(), author), if ', ' not in author and ' ' in author, replace ' ' with ', '
         self.authors = [author.strip() for author in self.authors]
         
