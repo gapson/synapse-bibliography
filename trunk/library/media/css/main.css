@@ -36,7 +36,10 @@ ol.right { float: left; }
 /* masthead */
 div#mastHead { margin: 0px 0px 0px 0px; padding-top: 10px; }
 div#mastHead div#InsideMSKCC { margin-left: 35px; }
-div#mastHead img#mskcc_logo { margin-right: 15px; margin-bottom: 6px; }
+div#mastHead a img#mskcc_logo { 
+    margin-right: 15px; 
+    padding-top: 10px;
+     }
 div.logo_bar { background-color: #541805; 
     clear: both; 
     z-index: -500; 
