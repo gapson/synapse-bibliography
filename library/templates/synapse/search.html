@@ -31,7 +31,7 @@
 
             }
 
-            $('#id_author').autocomplete('/ac/authors/',{matchContains: false, formatResult: formatResult, formatItem: formatItem, matchCase: false, selectFirst: false, multiple: true, multipleSeparator: '; ', autoFill: true, delay: 10, minChars: 2, scroll: false });
+            $('#id_author').autocomplete('/ac/authors/',{matchContains: false, formatResult: formatResult, formatItem: formatItem, matchCase: false, selectFirst: false, multiple: true, multipleSeparator: '; ', autoFill: true, delay: 200, minChars: 3, scroll: false });
 
             $('#id_journal').autocomplete('/ac/sources/',{matchContains: true, formatResult: formatResult, formatItem: formatItem, matchCase: false, selectFirst: false, multiple: false, autoFill: true, scroll: false });
 
