@@ -1,6 +1,6 @@
 /** Global Reset **/
 * {	padding:0; margin:0; }
-body { font-family:'trebuchet ms', verdana, arial; padding:0; width: 100%; font-size: 11pt; }
+body { font-family: /*'franklin gothic book', 'trebuchet ms',*/ verdana, arial; padding:0; width: 100%; font-size: 11pt; }
 h1, h2, h3, h4, h5, h6, p, pre, blockquote, form, label, ul, ol, dl, fieldset, address{ margin:0; }
 li, dd, blockquote { margin-left: 10px; }
 
