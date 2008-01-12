@@ -76,7 +76,7 @@ def duplicates(request):
                                 'file_text': 'no file text either'})
                                 
 
-@login_required    
+# @login_required    
 def search(request):
     if request.GET.has_key('format') and request.GET['format']:
         ref = request.META['HTTP_REFERER']
@@ -163,7 +163,7 @@ def search(request):
                 return render_to_response('synapse/search.html', {'form': form, 'show_dmt': False, 'is_internal': is_internal(request)})
 
 
-@login_required
+# @login_required
 def search_form(request):
     form = AdvancedSearchForm()
     announcement = None
@@ -173,13 +173,18 @@ def search_form(request):
         pass
     return render_to_response('synapse/search.html', {'form': form, 'announcement': announcement, 'show_dmt': False, 'is_internal': is_internal(request)})
 
-@login_required
+# @login_required
 def search_dmt_form(request):
     form = AdvancedSearchForm()
+    announcement = None
+    try:
+        announcement = Announcement.objects.filter(show__exact=True).latest()
+    except Announcement.DoesNotExist:
+        pass
     return render_to_response('synapse/search.html', {'form': form, 'announcement': announcement, 'show_dmt': True, 'is_internal': is_internal(request)})
 
 
-@login_required
+# @login_required
 def export(request, format=None, kwargs=None):
     if request.method == 'GET':
         results = None
@@ -209,7 +214,7 @@ def export(request, format=None, kwargs=None):
         else:
             return HttpResponseRedirect('/')
             
-@login_required
+# @login_required
 def comments(request):
     if request.method == 'POST':
         form = CommentForm(request.POST)
@@ -228,12 +233,12 @@ def comments(request):
         form = CommentForm()
         return render_to_response('synapse/comments.html', {'form': form, 'is_internal': is_internal(request)})
         
-@login_required
+# @login_required
 def comments_thanks(request):
     msg = 'Thanks for your interest.  A library staff member will address your concerns as soon as possible.'
     return render_to_response('synapse/comments.html', {'msg':msg, 'is_internal': is_internal(request)})
 
-@login_required
+# @login_required
 def autocomplete_authors(request):
     def iter_results(results):
         if results:
@@ -259,7 +264,7 @@ def autocomplete_authors(request):
 
     return HttpResponse(iter_results(authors), mimetype='text/plain')
     
-@login_required
+# @login_required
 def autocomplete_sources(request):
     def iter_results(results):
         if results:
@@ -280,21 +285,21 @@ def autocomplete_sources(request):
     return HttpResponse(iter_results(sources), mimetype='text/plain')
 
 
-@login_required
+# @login_required
 def full_document(request, document_id):
     doc = get_object_or_404(Document, pk=document_id)
     return render_to_response('synapse/document.html', {'doc': doc})
 
 
-@login_required
+# @login_required
 def myr(request):
     return render_to_response('synapse/managing_your_refs.html', {'is_internal': is_internal(request)})
     
-@login_required
+# @login_required
 def prt(request):
     return render_to_response('synapse/pub_ranking_tools.html', {'is_internal': is_internal(request)})
     
-@login_required
+# @login_required
 def wis(request):
     addr = request.META['REMOTE_ADDR']
     return render_to_response('synapse/what_is_synapse.html', {'is_internal': is_internal(request)})
