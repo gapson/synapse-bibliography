@@ -168,7 +168,7 @@ def search_form(request):
     form = AdvancedSearchForm()
     announcement = None
     try:
-        announcement = Announcement.objects.latest()
+        announcement = Announcement.objects.filter(show__exact=True).latest()
     except Announcement.DoesNotExist:
         pass
     return render_to_response('synapse/search.html', {'form': form, 'announcement': announcement, 'show_dmt': False, 'is_internal': is_internal(request)})
