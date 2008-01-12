@@ -32,7 +32,7 @@ from rest import RESTView
 from util import BulkParserDispatcher
 from search import search_all
 
-from library.synapse.models import DiseaseManagementTeam, Document, Publication, Source, Keyword, Employee
+from library.synapse.models import DiseaseManagementTeam, Document, Publication, Source, Keyword, Employee, Announcement
 from library.synapse.forms import BulkLoadForm, AdvancedSearchForm, ExportForm, DMT, CommentForm
 from library.synapse import exporters
 
@@ -166,12 +166,17 @@ def search(request):
 @login_required
 def search_form(request):
     form = AdvancedSearchForm()
-    return render_to_response('synapse/search.html', {'form': form, 'show_dmt': False, 'is_internal': is_internal(request)})
+    announcement = None
+    try:
+        announcement = Announcement.objects.latest()
+    except Announcement.DoesNotExist:
+        pass
+    return render_to_response('synapse/search.html', {'form': form, 'announcement': announcement, 'show_dmt': False, 'is_internal': is_internal(request)})
 
 @login_required
 def search_dmt_form(request):
     form = AdvancedSearchForm()
-    return render_to_response('synapse/search.html', {'form': form, 'show_dmt': True, 'is_internal': is_internal(request)})
+    return render_to_response('synapse/search.html', {'form': form, 'announcement': announcement, 'show_dmt': True, 'is_internal': is_internal(request)})
 
 
 @login_required

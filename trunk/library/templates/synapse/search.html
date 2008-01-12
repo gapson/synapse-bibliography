@@ -78,12 +78,16 @@
 {% endblock %}
 
 {% block content %}
+
+    <!-- START: announcements -->
+   {% if announcement %}<div id="announcements"><div id="ann_title">{{ announcement.title }}<br><span id="ann_date">{{ announcement.pub_date|date:"M j Y h:i A" }}</span></div><p>{{ announcement.body }}</p></div> {% endif %}
+    <!-- END: announcements -->
+
 	<!-- START: searchForm -->
 
 	<div id="searchForm">
-
 	   <h2>Complete One or More Fields</h2>
-	       {# <div id="announcements"><h3>I'm an announcement!</h3><p>Announce, announce.</p></div> #}
+
 			<form id="search_form" method="get" action="/documents/search/">
                 <table>
 

@@ -68,12 +68,26 @@ div#main_content table tr th { text-align: right; }
 
 /* announcements */
 div#announcements {
+/*     padding: 10px; */
     float: right;
-    border: solid 10px #541805;
-    padding: 10px;
+    border: solid 3px #541805;
+    margin: 10px;
+    width: 250px;
+    color: #541805;
     }
-div#announcements h3 {
-    padding-left: 0em;
+#ann_title {
+    font-size: 1.2em;
+    font-weight: 800;
+    padding: -5px;
+    padding-left: 5px;
+    background-color: #c9b762;
+    }
+#ann_date {
+    font-size: 0.8em;
+    font-weight: 300;
+    }
+div#announcements p {
+    padding: 10px;
     }
     
     
