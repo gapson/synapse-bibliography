@@ -21,6 +21,22 @@
 from django.db import models
 
 
+class Announcement(models.Model):
+    title = models.CharField(max_length=300, db_index=True)
+    body = models.TextField()
+    pub_date = models.DateTimeField(auto_now=True, editable=False)
+    
+    class Meta:
+        get_latest_by = "pub_date"
+        ordering = ['-pub_date', 'title']
+        
+    class Admin:
+        date_hierarchy = 'pub_date'
+        
+    def __unicode__(self):
+        return u'%s %s' % (self.pub_date, self.title)
+
+
 class Employee(models.Model):
     emp_id = models.CharField('Employee ID', max_length=10, blank=True, db_index=True) #, unique=True)
     first_name = models.CharField(max_length=40, db_index=True)
