@@ -74,6 +74,7 @@ div#announcements {
     margin: 10px;
     width: 250px;
     color: #541805;
+    text-align: center;
     }
 #ann_title {
     font-size: 1.2em;
