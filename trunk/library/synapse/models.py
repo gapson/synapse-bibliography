@@ -19,12 +19,13 @@
 
 
 from django.db import models
+import datetime
 
 
 class Announcement(models.Model):
     title = models.CharField(max_length=300, db_index=True)
     body = models.TextField()
-    pub_date = models.DateTimeField(auto_now=True, editable=False)
+    pub_date = models.DateTimeField(editable=False)
     show = models.BooleanField()
     
     class Meta:
@@ -36,6 +37,10 @@ class Announcement(models.Model):
         
     def __unicode__(self):
         return u'%s %s' % (self.pub_date, self.title)
+        
+    def save(self):
+        self.pub_date = datetime.datetime.now()
+        super(Announcement, self).save()
 
 
 class Employee(models.Model):
