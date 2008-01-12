@@ -25,6 +25,7 @@ class Announcement(models.Model):
     title = models.CharField(max_length=300, db_index=True)
     body = models.TextField()
     pub_date = models.DateTimeField(auto_now=True, editable=False)
+    show = models.BooleanField()
     
     class Meta:
         get_latest_by = "pub_date"
