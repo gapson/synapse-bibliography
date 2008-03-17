@@ -301,5 +301,5 @@ def prt(request):
     
 # @login_required
 def wis(request):
-    addr = request.META['REMOTE_ADDR']
+#     addr = request.META['REMOTE_ADDR']
     return render_to_response('synapse/what_is_synapse.html', {'is_internal': is_internal(request)})

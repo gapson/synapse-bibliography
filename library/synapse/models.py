@@ -26,6 +26,7 @@ class Announcement(models.Model):
     title = models.CharField(max_length=300, db_index=True)
     body = models.TextField()
     pub_date = models.DateTimeField(editable=False)
+    create_date = models.DateTimeField(editable=False, default=datetime.datetime.now)
     show = models.BooleanField()
     
     class Meta:
@@ -34,6 +35,9 @@ class Announcement(models.Model):
         
     class Admin:
         date_hierarchy = 'pub_date'
+        list_display = ['title', 'pub_date']
+        list_filter = ['pub_date', 'create_date', 'show']
+        search_fields = ['title', 'body']
         
     def __unicode__(self):
         return u'%s %s' % (self.pub_date, self.title)
@@ -53,7 +57,12 @@ class Employee(models.Model):
     currently_employed = models.BooleanField(default=True)
     
     class Admin:
-        list_display = ('first_name', 'middle_name', 'last_name', 'emp_id', 'job_title')
+        list_display = ('last_name', 'first_name', 'middle_name', 'emp_id', 'job_title')
+        list_filter = ['currently_employed', 'job_title']
+        search_fields = ['last_name', 'first_name', 'middle_name', 'emp_id']
+        
+    class Meta:
+        ordering = ['last_name', 'first_name', 'middle_name', 'emp_id']
     
     def __unicode__(self):
         return u'%s %s %s' % (self.first_name, self.middle_name, self.last_name)
@@ -78,7 +87,11 @@ class Department(models.Model):
         return u'%s' % self.name
     
     class Admin:
-        list_display = ('cost_center', 'name')
+        list_display = ['name', 'cost_center']
+        search_fields = ['name', 'cost_center']
+        
+    class Meta:
+        ordering = ['name']
 
 
     
@@ -90,6 +103,11 @@ class EmployeeDepartment(models.Model):
     
     class Admin:
         list_display = ('employee', 'department', 'year_begin', 'year_end')
+        list_filter = ['department']
+        search_fields = ['employee__last_name']
+        
+    class Meta:
+        ordering = ['employee', 'department', '-year_begin']
 
 
     
@@ -113,6 +131,9 @@ class DiseaseManagementTeam(models.Model):
     
     class Admin:
         pass
+        
+    class Meta:
+        ordering = ['name']
 
 
        
@@ -135,6 +156,9 @@ class Document(models.Model):
     document_subtype = models.CharField(max_length=40, blank=True)
     source = models.ForeignKey('Source', null=True, blank=True)
     dmt = models.ForeignKey(DiseaseManagementTeam, null=True, blank=True, db_index=True)
+    mod_date = models.DateTimeField(editable=False)
+    create_date = models.DateTimeField(editable=False, default=datetime.datetime.now)
+
     
     def __unicode__(self):
         return u'Title: %s  Authors: %s' % (self.title, self.author_names)
@@ -160,10 +184,16 @@ class Document(models.Model):
             return self.issue.split()[0]
         else:
             return None
+        
+    def save(self):
+        self.mod_date = datetime.datetime.now()
+        super(Document, self).save()
     
     
     class Admin:
-        pass
+        list_display = ['title', 'author_names']
+        list_filter = ['document_type', 'dmt', 'publish_year']
+        search_fields = ['title', 'author_names']
 
 
     
@@ -181,8 +211,13 @@ class Publisher(models.Model):
     sources = models.ManyToManyField('Source', null=True, blank=True)
     
     class Admin:
-        pass
+        search_fields = ['name', 'sources']
+    
+    class Meta:
+        ordering = ['name']
 
+    def __unicode__(self):
+        return u'%s' % self.name
 
     
 class Source(models.Model):
@@ -199,7 +234,11 @@ class Source(models.Model):
     is_type = models.CharField(max_length=4, choices=IS_TYPE_CHOICES, blank=True)
     
     class Admin:
-        pass
+        search_fields = ['name', 'is_number']
+        list_filter = ['is_type', 'publication_type']
+        
+    class Meta:
+        ordering = ['name']
     
     def __unicode__(self):
         return u'%s' % self.name
@@ -231,7 +270,8 @@ class Publication(models.Model):
     author = models.ForeignKey(Employee, null=True, blank=True, db_index=True)
     
     class Admin:
-        pass
+#         list_display = ['document', 'author_name']
+        search_fields = ['author_name'] #, 'document__title']
         
     def __unicode__(self):
         return u'Title: %s  Author: %s' % (self.document.title, self.author_name)
