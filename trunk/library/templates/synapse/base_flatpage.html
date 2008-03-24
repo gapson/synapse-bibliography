@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Synapse: Your Connection to MSK Publications</title>
+        <link rel="shortcut icon" href="/media/images/favicon.ico">
+        {% block stylesheets %}
+    	<link rel="stylesheet" type="text/css" href="/media/css/main.css">
+    	{% endblock %}
+    	{% block js_libraries %}{% endblock %}
+</head>
+<body>
+<!-- START: masthead -->
+<div id="mastHead">
+    {% if is_internal %}<div id="InsideMSKCC" class="left"><a href="http://mskweb5.mskcc.org/intranet/html/17731.cfm" target="_blank"><img src="http://library.mskcc.org/portal/graphics/common/inside_mskcc.gif" alt="Inside MSKCC"></a></div>{% endif %}
+
+    <a href="/"><img class="left" src="/media/images/synapselogo.gif" width="242" height="80" alt="Synapse Your Connection to MSK Publications" title="Synapse Your Connection to MSK Publications"></a>
+
+    <a href="http://www.mskcc.org" target="_blank"><img class="right" src="/media/images/mskcc-logo_small.gif" width="205" height="60" alt="Looking for www.mskcc.org?" title="Looking for www.mskcc.org?" id="mskcc_logo"></a>
+    <div class="logo_bar">
+&nbsp;
+    </div>
+</div>
+{% block extra_space %}
+<div class="clearBoth">&nbsp;</div>
+{% endblock %}
+<!-- END: masthead -->
+{% block navigation %}
+<!-- START: navigation -->
+<div id="navigation">
+
+    <div class="navigation_title">About <span class="Synapse_name">Synapse</span></div>
+
+	<ol>
+
+        <li><a href="/what_is_synapse/">What is <span class="Synapse_name">Synapse</span>?</a></li>
+
+		<li><a href="/comments/">Comments or Corrections?</a></li>
+
+    </ol>
+
+    <div class="navigation_title">Quick Links</div>
+
+    <ol>
+
+		<li><a href="/pub_ranking_tools/">Publication Ranking Tools</a></li>
+
+		<li><a href="/managing_your_refs/">Managing Your References</a></li>
+
+		<li><a href="http://library.mskcc.org" target="_blank">Library Web site</a></li>
+
+		<li><a href="http://www.ncbi.nlm.nih.gov/sites/entrez?otool=mskcclib&dr=abstract" target="_blank">PubMed</a></li>
+
+	</ol>
+
+</div>
+
+<!-- END: navigation -->
+{% endblock %}
+<!-- START: rightPane -->
+<div id="rightPane">
+    {% block flatpage.content %}
+	<!-- START: main content -->
+	<div id="main_content">
+	
+	
+	{{ flatpage.content }}
+	
+	
+	</div>
+	<!-- END: main content -->
+	{% endblock %}
+</div>
+<!-- END: rightPane -->
+	<!-- START: footer -->
+	<div id="footer">
+	   <div class="footerEmail"><a href="mailto:library@mskcc.org">library@mskcc.org</a></div>
+	   <div id="copyright" class="clearLeft">Copyright &copy; 2007-08 <a id="copyright_link" href="http://library.mskcc.org" target="_blank">Memorial Sloan-Kettering Cancer Center Library</a></div>
+	   <div id="address" class="clearRight"><address>1275 York Avenue New York, NY 10065<br>212-639-7439</address></div>
+
+	   <div id="ski_links" class="clearLeft">
+	       <a href="http://www.ski.edu" target="_blank">Sloan-Kettering Institute</a><br>
+	       <a href="http://www.sloankettering.edu" target="_blank">Gerstner Sloan-Kettering Graduate School of Biomedical Sciences</a>
+	   </div>
+	   <div id="msk_links" class="clearRight">
+	       <a href="http://www.mskcc.org" target="_blank">Memorial Sloan-Kettering Cancer Center</a><br>
+	       <a href="http://library.mskcc.org/about/disclaimer.pl" target="_blank">Legal Disclaimer</a>
+	   </div>
+	</div>
+	<!-- END: footer -->
+{% block ga_script %}
+    {% include "synapse/ga_script.html" %}
+{% endblock %}
+</body>
+</html>
