@@ -228,7 +228,7 @@ def search_all(search_data):
 
     if key_documents:
         results = Document.objects.filter(q).select_related().order_by('-publish_year') & key_documents
-    elif (hasattr(q, 'kwargs') and q.kwargs) or (hasattr(q, 'args') and q.args):
+    elif len(q):
         results = Document.objects.filter(q).select_related().order_by('-publish_year')
     else:
         results = []
