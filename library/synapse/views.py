@@ -26,6 +26,7 @@ from django.core.urlresolvers import reverse
 from django.newforms.widgets import flatatt
 from django.core.mail import send_mail, BadHeaderError
 from django.core.paginator import ObjectPaginator, InvalidPage
+from django.core.paginator import QuerySetPaginator
 
 
 from rest import RESTView
@@ -95,7 +96,7 @@ def search(request):
                     do_search = True
             if do_search:
                 results = search_all(form.cleaned_data)
-                result_count = len(results)
+#                 result_count = len(results)
                 
                 search_phrase = []
                 if form.cleaned_data['author'] and not form.cleaned_data['author'] == 'Last Name, First':
@@ -124,13 +125,15 @@ def search(request):
                     
                 search_phrase = ' and '.join(search_phrase)
                 
-                paginator = ObjectPaginator(results, 200)
+                paginator = QuerySetPaginator(results, 200)
+                
+                result_count = paginator.count
                 
                 page = 1
                 if request.GET.has_key('page'):
                     page = int(request.GET['page'])
                 if page > 0:
-                    results_page = paginator.get_page(page - 1)
+                    results_page = paginator.page(page)
                 
                 previous = 0
                 next = 1
@@ -146,12 +149,12 @@ def search(request):
 
                 full_uri = full_uri + request.GET.urlencode()
                 return render_to_response('synapse/results.html', Context({'data': search_phrase,
-                                                                          'publications': results_page,
+                                                                          'publications': results_page.object_list,
                                                                           'page': page,
-                                                                          'pages': paginator.pages,
+                                                                          'pages': paginator.num_pages,
                                                                           'page_range': paginator.page_range,
-                                                                          'has_next': paginator.has_next_page(previous),
-                                                                          'has_previous': paginator.has_previous_page(previous),
+                                                                          'has_next': results_page.has_next(),
+                                                                          'has_previous': results_page.has_previous(),
                                                                           'next': next,
                                                                           'previous': previous,
                                                                           'page_offset': page_offset,
