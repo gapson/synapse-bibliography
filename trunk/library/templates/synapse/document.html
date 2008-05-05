@@ -14,7 +14,7 @@
 <p><strong>DISEASE MANAGEMENT TEAM:</strong> {{ doc.dmt.name }}</p>
 <p><strong>AFFILIATIONS:</strong> {{ doc.affiliations }}</p>
 <br>
-<p><strong>ABSTRACT:</strong> {{ doc.abstract }}</p>
+<p id="abstract"><strong>ABSTRACT:</strong> {{ doc.abstract }}</p>
 <br>
 <p><strong>SOURCE:</strong> {{ doc.source.name }} &nbsp; <strong>YEAR:</strong> {{ doc.publish_year }} &nbsp; <strong>VOLUME:</strong> {{ doc.volume|default:"-" }} &nbsp;<strong>ISSUE:</strong> {{ doc.issue|default:"-" }} &nbsp;<strong>PAGES:</strong> {{ doc.page_range|default:"-" }}</p>
 <p><strong>DOCUMENT TYPE:</strong> {{ doc.document_type }} &nbsp; <strong>DOI:</strong> {{ doc.doi|default:"-" }} &nbsp; <strong>LANGUAGE:</strong> {{ doc.language }}</p>

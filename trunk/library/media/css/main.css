@@ -196,3 +196,10 @@ span.paginate-current {}
 span.paginate-link {}
 span.next {}
 span.next-na {}
+
+#abstract { 
+    -webkit-column-count: 2;
+    -moz-column-count: 2;
+    -webkit-column-gap: 1.3em;
+    -moz-column-gap: 1.3em;
+    }
