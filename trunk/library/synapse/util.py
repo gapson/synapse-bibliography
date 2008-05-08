@@ -115,4 +115,11 @@ def remove_punctuation(phrase):
     stripped_phrase = stripped_phrase.lower()
     return stripped_phrase
 
+def is_number_normalize(is_number):
+    isnum = is_number
+    isnum = isnum.rjust(8, '0')
+    if len(isnum) == 8:
+        isnum = '-'.join((isnum[:4], isnum[4:]))
+    return isnum
+
 
