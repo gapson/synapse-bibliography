@@ -22,7 +22,7 @@ from django.core.exceptions import MultipleObjectsReturned
 
 from library.synapse.models import Publisher, Source, Document, Keyword, Publication
 from library.synapse.models import DiseaseManagementTeam, Institution, NameOrder, Employee
-from library.synapse.util import split_name, remove_punctuation
+from library.synapse.util import split_name, remove_punctuation, is_number_normalize
 
 def create_publisher(record):
     publisher = None    
@@ -33,29 +33,41 @@ def create_publisher(record):
 def create_source(record, publisher):
     source = None
     source_created = False
+    isnum = ''
+    title = ''
+    if record.isnumber:
+        isnum = is_number_normalize(record.isnumber)
+        
+    if record.source:
+        if record.source.isupper():
+            title = record.source.title()
+        else:
+            title = record.source
+        
+
     if record.istype:
-        source, source_created = Source.objects.get_or_create(is_number=record.isnumber,
-                                                defaults={'name':record.source,
+        source, source_created = Source.objects.get_or_create(is_number=isnum,
+                                                defaults={'name':title,
                                                           'publication_type':record.publication_type,
                                                           'is_type':record.istype})
 
     elif record.source:
         if record.isnumber:
-            source, source_created = Source.objects.get_or_create(is_number=record.isnumber,
-                                                    defaults={'name':record.source,
+            source, source_created = Source.objects.get_or_create(is_number=isnum,
+                                                    defaults={'name':title,
                                                               'publication_type':record.publication_type})
         else:
             try:
-                source, source_created = Source.objects.get_or_create(name=record.source,
+                source, source_created = Source.objects.get_or_create(name=title,
                                                                       defaults={'publication_type':record.publication_type})
             except MultipleObjectsReturned:
-                source = Source.objects.filter(name=record.source)[0]
+                source = Source.objects.filter(name=title)[0]
             
 
     if source:
         modified = False
         if record.source and not source.name:
-            source.name = record.source
+            source.name = title
             modified = True
         if record.publication_type and not source.publication_type:
             source.publication_type = record.publication_type
@@ -64,7 +76,7 @@ def create_source(record, publisher):
             source.is_type = record.istype
             modified = True
         if record.esnumber and not source.es_number:
-            source.es_number = record.esnumber
+            source.es_number = is_number_normalize(record.esnumber)
             modified = True
         if modified:
             source.save()
