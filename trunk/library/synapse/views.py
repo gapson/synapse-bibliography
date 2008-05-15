@@ -90,9 +90,10 @@ def search(request):
     else:
         form = AdvancedSearchForm(request.GET)
         if form.is_valid():
+            msg = None
             do_search = False
             for item in form.cleaned_data.values():
-                if item:
+                if item and item not in ['Last Name, First', 'Ex: Blood', 'Ex: melanoma', '0', 'BLANK']:
                     do_search = True
             if do_search:
                 results = search_all(form.cleaned_data)
@@ -127,7 +128,10 @@ def search(request):
                 
                 paginator = QuerySetPaginator(results, 200)
                 
-                result_count = paginator.count
+                try:
+                    result_count = paginator.count
+                except TypeError:
+                    result_count = 0
                 
                 page = 1
                 if request.GET.has_key('page'):
@@ -162,8 +166,9 @@ def search(request):
                                                                           'result_count': result_count,
                                                                           'is_internal': is_internal(request)}))
             else:
+                msg = u'Please enter at least one search term.'
                 form = AdvancedSearchForm()
-                return render_to_response('synapse/search.html', {'form': form, 'show_dmt': False, 'is_internal': is_internal(request)})
+                return render_to_response('synapse/search.html', {'form': form, 'show_dmt': False, 'is_internal': is_internal(request), 'msg':msg })
 
 
 # @login_required
