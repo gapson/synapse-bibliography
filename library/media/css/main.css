@@ -203,3 +203,9 @@ span.next-na {}
     -webkit-column-gap: 1.3em;
     -moz-column-gap: 1.3em;
     }
+    
+#message {
+/*     font-size: 0.8em; */
+    background-color: #c9b762;
+    text-align: center;
+    }

@@ -131,7 +131,12 @@ def search(request):
                 try:
                     result_count = paginator.count
                 except TypeError:
-                    result_count = 0
+#                     result_count = 0
+                    msg = u'Your search for %s returned no results.  Please broaden your search and try again.' % search_phrase
+                    form = AdvancedSearchForm()
+                    return render_to_response('synapse/search.html', {'form': form, 'show_dmt': False, 'is_internal': is_internal(request), 'msg':msg })
+                    
+                
                 
                 page = 1
                 if request.GET.has_key('page'):
