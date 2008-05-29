@@ -173,12 +173,12 @@ def search_keyword_sql(target):
     crsr.execute(doc_sql, params)
 #     print crsr.fetchall()
     results = crsr.fetchall()
-    print results
+#     print results
     for doc_id in results:
-        print "id: ", doc_id[0]
+#         print "id: ", doc_id[0]
         hits.append(doc_id[0])
         
-    print "Title/abstract hits: ", hits
+#     print "Title/abstract hits: ", hits
     
     kw_sql = "select distinct document_id from synapse_keyword where (term like %s)"
     kw_where = "(term like %s)"
@@ -192,15 +192,19 @@ def search_keyword_sql(target):
     crsr.execute(kw_sql, kwords)
 #     print crsr.fetchall()
     results = crsr.fetchall()
-    print results
+#     print results
     for doc_id in results:
-        print "doc_id: ", doc_id[0]
+#         print "doc_id: ", doc_id[0]
         hits.append(doc_id[0])
     
-    print "Keyword hits: ", hits
+#     print "Keyword hits: ", hits
     
     key_documents = Document.objects.filter(id__in=hits)
-    return key_documents
+#     print key_documents
+    if key_documents:
+        return key_documents
+    else:
+        return "No results"
     
 def search_all(search_data):
     q = Q()
@@ -226,8 +230,10 @@ def search_all(search_data):
     if search_data['keywords']:
         key_documents = search_keyword_sql(search_data['keywords'])
 
-    if key_documents:
+    if key_documents and key_documents != 'No results':
         results = Document.objects.filter(q).select_related().order_by('-publish_year') & key_documents
+    elif key_documents == 'No results':
+        results = []
     elif len(q):
         results = Document.objects.filter(q).select_related().order_by('-publish_year')
     else:
