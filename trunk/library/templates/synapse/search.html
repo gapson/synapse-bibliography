@@ -83,7 +83,7 @@
    {% if announcement %}<div id="announcements"><div id="ann_title">{{ announcement.title }}<br><span id="ann_date">{{ announcement.pub_date|date:"M j Y h:i A" }}</span></div><p>{{ announcement.body|safe }}</p></div> {% endif %}
     <!-- END: announcements -->
     <!-- START: messages -->
-    {% if msg %}<div id="message"><h2>{{ msg }}</h2></div>{% endif %}
+    {% if msg %}<div id="message"><h2>{{ msg|safe }}</h2></div>{% endif %}
 
 	<!-- START: searchForm -->
 

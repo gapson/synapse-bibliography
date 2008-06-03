@@ -113,9 +113,12 @@ class Record(object):
         # example: "Cancer Practice: A Multidisciplinary Journal of Cancer Care. 1996 Mar-Apr; 4(2): 88-95. (9 ref)" -- CINAHL journal format
         # example 7: "Archives of Internal Medicine. 1999 Jul 26; 159(14): 1592-8, 1630-1. (15 ref)" -- CINAHL journal format
             # example 8: 'Journal of Clinical Oncology. 1999 Nov; 17(11s): Suppl: 44-52. (62 ref)'
-            orig_so = self.source
-#                 print orig_so
-            self.source, pub, refs = self.source[0].split('.')
+            if isinstance(self.source, list):
+                # if the source is split over two lines, it comes in as a len(source) > 1 list, 
+                # so join it together into a string and work on that instead
+                self.source = ''.join(self.source)
+            print self.source
+            self.source, pub, refs = self.source.split('.')
             self.source = self.source.strip()
             # pub = " 1996 Mar-Apr; 4(2): 88-95"
             # or pub = " 1999 Jul 26; 159(14): 1592-8, 1630-1"

@@ -230,13 +230,31 @@ def search_all(search_data):
     if search_data['keywords']:
         key_documents = search_keyword_sql(search_data['keywords'])
 
-    if key_documents and key_documents != 'No results':
-        results = Document.objects.filter(q).select_related().order_by('-publish_year') & key_documents
-    elif key_documents == 'No results':
-        results = []
-    elif len(q):
-        results = Document.objects.filter(q).select_related().order_by('-publish_year')
+#     if key_documents and key_documents != 'No results':
+#         results = Document.objects.filter(q).select_related().order_by('-publish_year') & key_documents
+#     elif key_documents == 'No results':
+#         results = []
+#     elif len(q):
+#         print q
+#         results = Document.objects.filter(q).select_related().order_by('-publish_year')
+#         print results
+#     else:
+#         results = []
+    # 1.  author search
+    # 2.  keyword search
+    # 3.  date search
+    # 4.  combo search, with keywords
+    
+    if not key_documents:
+        if len(q):
+            results = Document.objects.filter(q).select_related().order_by('-publish_year')
+        else:
+            results = []
     else:
-        results = []
+        if key_documents != 'No results':
+            results = Document.objects.filter(q).select_related().order_by('-publish_year') & key_documents
+        else:
+            results = []
+
     return results
     
