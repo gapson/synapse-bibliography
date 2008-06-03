@@ -76,6 +76,36 @@ def duplicates(request):
     return render_to_response('synapse/duplicates.html', {'file_type': 'nothing at this time',
                                 'file_text': 'no file text either'})
                                 
+def build_search_phrase(form):
+    search_phrase = []
+    if form.cleaned_data['author'] and not form.cleaned_data['author'] == 'Last Name, First':
+        author = form.cleaned_data['author'].strip().strip(';')
+        search_phrase.append(author)
+    
+    if form.cleaned_data['journal'] and not form.cleaned_data['journal'] == 'Ex: Blood':
+        search_phrase.append(form.cleaned_data['journal'])
+        
+    if form.cleaned_data['keywords'] and not form.cleaned_data['keywords'] == 'Ex: melanoma':
+        search_phrase.append(form.cleaned_data['keywords'])
+        
+    if form.cleaned_data['dmt'] and not form.cleaned_data['dmt'] == '0':
+        for dmt_id, name in DMT:
+            if dmt_id == int(form.cleaned_data['dmt']):
+                search_phrase.append(' '.join(('DMT:',name)))
+        
+    if form.cleaned_data['doc_type']:
+        search_phrase.extend(form.cleaned_data['doc_type'])
+    
+    if form.cleaned_data['year_start'] and not form.cleaned_data['year_start'] == 'BLANK':
+        search_phrase.append('From %s' % form.cleaned_data['year_start'])
+
+    if form.cleaned_data['year_end'] and not form.cleaned_data['year_end'] == 'BLANK':
+        search_phrase.append('To %s' % form.cleaned_data['year_end'])
+        
+    search_phrase = ' and '.join(search_phrase)
+    return search_phrase
+    
+                                
 
 # @login_required    
 def search(request):
@@ -97,79 +127,63 @@ def search(request):
                     do_search = True
             if do_search:
                 results = search_all(form.cleaned_data)
+                # print results
 #                 result_count = len(results)
-                
-                search_phrase = []
-                if form.cleaned_data['author'] and not form.cleaned_data['author'] == 'Last Name, First':
-                    author = form.cleaned_data['author'].strip().strip(';')
-                    search_phrase.append(author)
-                
-                if form.cleaned_data['journal'] and not form.cleaned_data['journal'] == 'Ex: Blood':
-                    search_phrase.append(form.cleaned_data['journal'])
-                    
-                if form.cleaned_data['keywords'] and not form.cleaned_data['keywords'] == 'Ex: melanoma':
-                    search_phrase.append(form.cleaned_data['keywords'])
-                    
-                if form.cleaned_data['dmt'] and not form.cleaned_data['dmt'] == '0':
-                    for dmt_id, name in DMT:
-                        if dmt_id == int(form.cleaned_data['dmt']):
-                            search_phrase.append(' '.join(('DMT:',name)))
-                    
-                if form.cleaned_data['doc_type']:
-                    search_phrase.extend(form.cleaned_data['doc_type'])
-                
-                if form.cleaned_data['year_start'] and not form.cleaned_data['year_start'] == 'BLANK':
-                    search_phrase.append('From %s' % form.cleaned_data['year_start'])
 
-                if form.cleaned_data['year_end'] and not form.cleaned_data['year_end'] == 'BLANK':
-                    search_phrase.append('To %s' % form.cleaned_data['year_end'])
+                search_phrase = build_search_phrase(form)
+                
+                if results:
+                    paginator = QuerySetPaginator(results, 200)
+                    # print paginator
                     
-                search_phrase = ' and '.join(search_phrase)
-                
-                paginator = QuerySetPaginator(results, 200)
-                
-                try:
-                    result_count = paginator.count
-                except TypeError:
-#                     result_count = 0
-                    msg = u'Your search for %s returned no results.  Please broaden your search and try again.' % search_phrase
+                    try:
+                        result_count = paginator.count
+                        # print "Result Count: ", result_count
+                    except TypeError:
+    #                     result_count = 0
+                        msg = u'Your search for <em>%s</em> returned no results.  Please broaden your search and try again.' % search_phrase
+                        form = AdvancedSearchForm()
+                        return render_to_response('synapse/search.html', {'form': form, 'show_dmt': False, 'is_internal': is_internal(request), 'msg':msg })
+                        
+                    
+                    
+                    page = 1
+                    if request.GET.has_key('page'):
+                        page = int(request.GET['page'])
+                    if page > 0:
+                        results_page = paginator.page(page)
+                    
+                    previous = 0
+                    next = 1
+                    if page > 0:
+                        previous = page - 1
+                    next = page + 1
+                    
+                    page_offset = 0
+                    if page > 1:
+                        page_offset = previous * 200
+                        
+                    full_uri = "/documents/search/?"
+    
+                    full_uri = full_uri + request.GET.urlencode()
+                    return render_to_response('synapse/results.html', Context({'data': search_phrase,
+                                                                              'publications': results_page.object_list,
+                                                                              'page': page,
+                                                                              'pages': paginator.num_pages,
+                                                                              'page_range': paginator.page_range,
+                                                                              'has_next': results_page.has_next(),
+                                                                              'has_previous': results_page.has_previous(),
+                                                                              'next': next,
+                                                                              'previous': previous,
+                                                                              'page_offset': page_offset,
+                                                                              'uri': full_uri,
+                                                                              'result_count': result_count,
+                                                                              'is_internal': is_internal(request)}))
+                else:
+                    msg = u'Your search for <em>%s</em> returned no results.  Please broaden your search and try again.' % search_phrase
                     form = AdvancedSearchForm()
                     return render_to_response('synapse/search.html', {'form': form, 'show_dmt': False, 'is_internal': is_internal(request), 'msg':msg })
-                    
-                
-                
-                page = 1
-                if request.GET.has_key('page'):
-                    page = int(request.GET['page'])
-                if page > 0:
-                    results_page = paginator.page(page)
-                
-                previous = 0
-                next = 1
-                if page > 0:
-                    previous = page - 1
-                next = page + 1
-                
-                page_offset = 0
-                if page > 1:
-                    page_offset = previous * 200
-                    
-                full_uri = "/documents/search/?"
 
-                full_uri = full_uri + request.GET.urlencode()
-                return render_to_response('synapse/results.html', Context({'data': search_phrase,
-                                                                          'publications': results_page.object_list,
-                                                                          'page': page,
-                                                                          'pages': paginator.num_pages,
-                                                                          'page_range': paginator.page_range,
-                                                                          'has_next': results_page.has_next(),
-                                                                          'has_previous': results_page.has_previous(),
-                                                                          'next': next,
-                                                                          'previous': previous,
-                                                                          'page_offset': page_offset,
-                                                                          'uri': full_uri,
-                                                                          'result_count': result_count,
-                                                                          'is_internal': is_internal(request)}))
             else:
                 msg = u'Please enter at least one search term.'
                 form = AdvancedSearchForm()
