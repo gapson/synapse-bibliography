@@ -222,6 +222,9 @@ class PSYCINFOParser(object):
         
     def PT(self):
         self.record.publication_type = self.data  # occurs multiple times in Ovid files
+
+    def AN(self):
+        self.record.publication_type = self.data  # occurs multiple times in Ovid files
         
     def DT(self):
         self.record.document_type = self.data[0]
