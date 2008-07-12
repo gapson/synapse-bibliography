@@ -35,8 +35,11 @@ from search import search_all
 
 from library.synapse.models import DiseaseManagementTeam, Document, Publication, Source, Keyword, Employee, Announcement
 from library.synapse.forms import BulkLoadForm, AdvancedSearchForm, ExportForm, DMT, CommentForm
-from library.synapse import exporters
+from library.synapse import exporters, paginator
 
+from urllib import urlencode
+
+# only external dependency
 import iplib
 
 
@@ -126,9 +129,11 @@ def search(request):
                 if item and item not in ['Last Name, First', 'Ex: Blood', 'Ex: melanoma', '0', 'BLANK']:
                     do_search = True
             if do_search:
+                # results is a QuerySet
                 results = search_all(form.cleaned_data)
-                # print results
-#                 result_count = len(results)
+#                 print results
+                result_count = len(results)
+#                 print result_count
 
                 search_phrase = build_search_phrase(form)
                 
@@ -147,38 +152,90 @@ def search(request):
                         
                     
                     
-                    page = 1
+                        
+#                     full_uri = "/documents/search/?"
+#     
+#                     full_uri = full_uri + request.GET.urlencode()
+#                     full_uri = request.path + '?' + request.GET.urlencode()
+                    # TODO: rip request.GET apart, rebuild new URL without the extraneous page terms
+                    new_url = {}
+                    if request.GET.has_key('author'):
+                        if request.GET['author'] != 'Last Name, First':
+                            new_url['author'] = request.GET['author']
+                            
+                    if request.GET.has_key('journal'):
+                        if request.GET['journal'] != '':
+                            new_url['journal'] = request.GET['journal']
+                            
+                    if request.GET.has_key('year_start'):
+                        if request.GET['year_start'] != 'BLANK':
+                            new_url['year_start'] = request.GET['year_start']
+                            
+                    if request.GET.has_key('year_end'):
+                        if request.GET['year_end'] != 'BLANK':
+                            new_url['year_end'] = request.GET['year_end']
+                            
+                    if request.GET.has_key('keywords'):
+                        if request.GET['keywords'] != '':
+                            new_url['keywords'] = request.GET['keywords']
+                        
+                    if request.GET.has_key('doc_type'):
+                        new_url['doc_type'] = form.cleaned_data['doc_type']
+                        
+                    
+                    
+                    results_page = None
+                    page = 0
                     if request.GET.has_key('page'):
                         page = int(request.GET['page'])
-                    if page > 0:
-                        results_page = paginator.page(page)
-                    
-                    previous = 0
-                    next = 1
-                    if page > 0:
-                        previous = page - 1
-                    next = page + 1
-                    
-                    page_offset = 0
-                    if page > 1:
-                        page_offset = previous * 200
+                    else:
+                        page = 1
                         
-                    full_uri = "/documents/search/?"
-    
-                    full_uri = full_uri + request.GET.urlencode()
-                    return render_to_response('synapse/results.html', Context({'data': search_phrase,
-                                                                              'publications': results_page.object_list,
-                                                                              'page': page,
-                                                                              'pages': paginator.num_pages,
-                                                                              'page_range': paginator.page_range,
-                                                                              'has_next': results_page.has_next(),
-                                                                              'has_previous': results_page.has_previous(),
-                                                                              'next': next,
-                                                                              'previous': previous,
-                                                                              'page_offset': page_offset,
-                                                                              'uri': full_uri,
-                                                                              'result_count': result_count,
-                                                                              'is_internal': is_internal(request)}))
+                    results_page = paginator.page(page)
+                        
+                    previous = 0
+                    next = 0
+                    if page > 0:
+                        previous = results_page.number - 1
+                    next = results_page.number + 1
+                    
+#                     if request.GET.has_key('page'):
+#                         if request.GET['page'] != '':
+#                             new_url['page'] = request.GET['page']
+
+#                     print "new_url: ", urlencode(new_url, doseq=True)
+                    
+                    full_uri = '?' + urlencode(new_url, doseq=True)
+
+                    
+                    context = {
+                            'data': search_phrase,
+                            'publications': results_page.object_list,
+                            'pages': paginator.num_pages,
+                            'page_range':paginator.page_range,
+                            'page': results_page.number,
+                            'has_next':results_page.has_next(),
+                            'has_previous':results_page.has_previous(),
+                            'next':next,
+                            'previous':previous,
+                            'uri':full_uri,
+                            'result_count':paginator.count,
+                            'is_internal': is_internal(request),
+                            }
+                    return render_to_response('synapse/results.html', context)
+#                     return render_to_response('synapse/results.html', Context({'data': search_phrase,
+#                                                                               'publications': results_page.object_list,
+#                                                                               'page': page,
+#                                                                               'pages': paginator.num_pages,
+#                                                                               'page_range': paginator.page_range,
+#                                                                               'has_next': results_page.has_next(),
+#                                                                               'has_previous': results_page.has_previous(),
+#                                                                               'next': next,
+#                                                                               'previous': previous,
+#                                                                               'page_offset': page_offset,
+#                                                                               'uri': full_uri,
+#                                                                               'result_count': result_count,
+#                                                                               'is_internal': is_internal(request)}))
                 else:
                     msg = u'Your search for <em>%s</em> returned no results.  Please broaden your search and try again.' % search_phrase
                     form = AdvancedSearchForm()
