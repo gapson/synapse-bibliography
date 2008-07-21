@@ -117,11 +117,17 @@ def newsfeeds_search(request):
     if form.is_valid():
         if form.cleaned_data['author'] != 'Last Name, First':
             q_list = []
-            authors = form.cleaned_data['author'].split('; ')
+            authors = form.cleaned_data['author'].rstrip('; ').split('; ')
+            print authors
 #             results = Employee.objects.all()
             for author in authors:
-                lname, fname = author.split(', ')
-                q_list.append(Q(last_name__exact=lname, first_name__exact=fname))
+                print author
+                if author:
+                    print author
+                    lname, fname = author.split(', ')
+                    print lname, fname
+                    q_list.append(Q(last_name__exact=lname, first_name__exact=fname))
+            print q_list
             results = Employee.objects.filter(q_list[0])
             for q in q_list[0:]:
                 results = results | Employee.objects.filter(q)
