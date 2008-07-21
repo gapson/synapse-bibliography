@@ -1,5 +1,13 @@
 from django.conf.urls.defaults import *
 
+from library.synapse.feeds import LatestDocuments, LatestDocumentsByAuthor, LatestDocumentsByDocType
+
+feeds = {
+    'latest': LatestDocuments,
+    'author': LatestDocumentsByAuthor,
+    'doctype': LatestDocumentsByDocType,
+    }
+
 urlpatterns = patterns('',
     # Example:
     # (r'^library/', include('library.foo.urls')),
@@ -22,6 +30,10 @@ urlpatterns = patterns('',
      (r'^managing_your_refs/$', 'library.synapse.views.myr'),
      (r'^pub_ranking_tools/$', 'library.synapse.views.prt'),
      (r'^what_is_synapse/$', 'library.synapse.views.wis'),
+     (r'^newsfeeds/$', 'library.synapse.views.newsfeeds'),
+     (r'^newsfeeds/search/$', 'library.synapse.views.newsfeeds_search'),
+     
+     (r'^feeds/(?P<url>.*)/$', 'django.contrib.syndication.views.feed', {'feed_dict': feeds}),
 #      (r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': '/Users/herndonp/Projects/Work/django/library/media'} ),
      (r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': '/Users/herndonp/Projects/Work/django/googlesvn/synapse-bibliography/library/media'} ),
 )

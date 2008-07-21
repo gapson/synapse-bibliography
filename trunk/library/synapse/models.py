@@ -66,6 +66,9 @@ class Employee(models.Model):
     
     def __unicode__(self):
         return u'%s %s %s' % (self.first_name, self.middle_name, self.last_name)
+        
+#     def get_absolute_url(self):
+#         return "/employee/%s" % self.emp_id
 
 
         
@@ -194,6 +197,9 @@ class Document(models.Model):
         list_display = ['title', 'author_names']
         list_filter = ['document_type', 'dmt', 'publish_year']
         search_fields = ['title', 'author_names']
+        
+    def get_absolute_url(self):
+        return "/document/%i/" % self.id
 
 
     

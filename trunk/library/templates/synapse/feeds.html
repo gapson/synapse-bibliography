@@ -1,0 +1,141 @@
+
+{% extends "synapse/base.html" %}
+{% block stylesheets %}
+        <link rel="stylesheet" type="text/css" href="/media/css/jquery.autocomplete.css">
+        {{ block.super }}
+{% endblock %}
+
+{% block js_libraries %}
+        <script type="text/javascript" src="/media/js/jquery-1.2.1.js"></script>
+
+        <script type="text/javascript" src="/media/js/jquery.bgiframe.js"></script>
+
+        <script type="text/javascript" src="/media/js/jquery.dimensions.js"></script>
+
+        <script type="text/javascript" src="/media/js/jquery.autocomplete.js"></script>
+
+        <script type="text/javascript">
+        $(document).ready(function() {
+
+            function formatItem(row) {
+
+                //var row = row.split("|");
+
+                return row[0];
+
+            }
+
+            function formatResult(row) {
+
+                return row[0];
+
+            }
+
+            $('#id_author').autocomplete('/ac/authors/',{matchContains: false, formatResult: formatResult, formatItem: formatItem, matchCase: false, selectFirst: false, multiple: true, multipleSeparator: '; ', autoFill: true, delay: 300, minChars: 2, scroll: false });
+
+            function populateElement(selector, defvalue) {
+
+                if($(selector).attr('value') == null) {
+
+                    $(selector).attr('value', defvalue);
+
+                }
+
+              
+
+                $(selector).focus(function() {
+
+                    if($(selector).attr('value') == defvalue) {
+
+                        $(selector).attr('value', '');
+
+                    }
+
+                });
+
+                
+
+                $(selector).blur(function() {
+
+                    if($(selector).attr('value') == null || $(selector).attr('value') == "") {
+
+                        $(selector).attr('value', defvalue);
+
+                    }
+
+                });
+
+            }
+
+            populateElement('#id_author', 'Last Name, First');
+            
+        });
+
+        </script>
+
+{% endblock %}
+
+{% block content %}
+
+    <!-- START: announcements -->
+   {% if announcement %}<div id="announcements"><div id="ann_title">{{ announcement.title }}<br><span id="ann_date">{{ announcement.pub_date|date:"M j Y h:i A" }}</span></div><p>{{ announcement.body|safe }}</p></div> {% endif %}
+    <!-- END: announcements -->
+    <!-- START: messages -->
+    {% if msg %}<div><h2 id="message">{{ msg|safe }}</h2><br><br></div>{% endif %}
+    <div id="feeds_left">
+    <div id="feeds_desc">
+        <h2>News Feeds Provided by Synapse</h2>
+        <p>The main feed is <a href="/feeds/latest/" rel="feed">here</a>, and provides the documents added to Synapse within the last seven days.  Also available are individual feeds for each author, or for multiple authors.  Use the search form below to find the feed for an author or authors.  Simply supply the author's last name, and the form will suggest published authors in our database.  Add additional names after the first to generate a link to the feed of all documents by all the authors.</p>
+    </div>
+	<!-- START: searchForm -->
+
+	<div id="feedSearchForm">
+
+			<form id="feed_search_form" method="post" action="/newsfeeds/search/">
+                <table>
+
+                    <tr><th>{{ form.author.label_tag }}</th><td>{{ form.author }}<br><span class="subtle">{% autoescape off %}{{ form.author.help_text }}{% endautoescape %}</span></td>{% if form.author.errors %}<td>{{ form.author.errors }}</td>{% endif %}</tr>
+
+                </table>
+				<div class="clearLeft">&nbsp;</div>
+				<div class="clearBoth"><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" value="    Search    ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="reset" value="    Clear    "></p><br></div>
+			</form>
+
+	</div>
+	{% if results %}
+	<div id="feedSearchResults">
+	<h2>Individual Author News Feed</h2>
+	{% for result in results %}
+    <p><a href="/feeds/author/{{ result.id }}/" title="Feed for {{ result.first_name }} {{ result.last_name }}">{{ result.first_name }} {{ result.last_name }}</a></p>
+    {% endfor %}
+	</div>
+	{% endif %}
+	{% if combined_url %}
+	<div id="combinedFeedSearchResults">
+	<h2>Combined Authors News Feed</h2>
+    <p><a href="/feeds/author/{{ combined_url }}/" title="Combined Feed for authors">Combined Feed</a></p>
+	</div>
+	{% endif %}
+	</div>
+	<div id="doc_type_feeds">
+	   <h2>News Feeds by Document Type</h2>
+	   <p>Boilerplate text describing the fact that we offer newsfeeds for each type of document</p>
+	   <p>
+	       <ul>
+	           <li><a href="/feeds/doctype/article/">Articles</a></li>
+	           <li><a href="/feeds/doctype/article_in_press/">Articles in Press</a></li>
+	           <li><a href="/feeds/doctype/book/">Books</a></li>
+	           <li><a href="/feeds/doctype/book_chapter/">Book Chapters</a></li>
+	           <li><a href="/feeds/doctype/conference_paper/">Conference Papers</a></li>
+	           <li><a href="/feeds/doctype/editorial/">Editorials</a></li>
+	           <li><a href="/feeds/doctype/other/">Other</a></li>
+	           <li><a href="/feeds/doctype/review_article/">Review Articles</a></li>
+	           <li><a href="/feeds/doctype/short_survey/">Short Surveys</a></li>
+	           <li><a href="/feeds/doctype/unspecified/">Unspecified</a></li>
+	       </ul>
+	   </p>
+    </div>
+
+	<!-- END: searchForm -->
+{% endblock %}
+

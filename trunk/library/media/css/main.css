@@ -150,8 +150,26 @@ div#searchResults table tfoot tr td {
     border-left: 1px solid #541805;
     }
 
+div#feeds_left {
+    width: 30%;
+    float: left;
+    padding-right: 5em;
+    margin-right: 2em;
+    }
 
+div#doc_type_feeds {
+    width: 30%
+    float: right;
+/*     padding-left: 5em; */
+/*     clear: right; */
+    }
 
+div#doc_type_feeds ul, div#doc_type_feeds li {
+    padding: 0;
+    margin: 0;
+/*     padding-left: 2em; */
+/*     margin-left: 20em; */
+    }
 
 
 /* footer */

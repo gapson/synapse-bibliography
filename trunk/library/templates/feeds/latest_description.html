@@ -1,0 +1,8 @@
+<p><strong>AUTHORS:</strong> {{ obj.author_names }}</p>
+<p><strong>DISEASE MANAGEMENT TEAM:</strong> {{ obj.dmt.name }}</p>
+<p><strong>AFFILIATIONS:</strong> {{ obj.affiliations }}</p>
+<br>
+<p id="abstract"><strong>ABSTRACT:</strong> {{ obj.abstract }}</p>
+<br>
+<p><strong>SOURCE:</strong> {{ obj.source.name }} &nbsp; <strong>YEAR:</strong> {{ obj.publish_year }} &nbsp; <strong>VOLUME:</strong> {{ obj.volume|default:"-" }} &nbsp;<strong>ISSUE:</strong> {{ obj.issue|default:"-" }} &nbsp;<strong>PAGES:</strong> {{ obj.page_range|default:"-" }}</p>
+<p><strong>DOCUMENT TYPE:</strong> {{ obj.document_type }} &nbsp; <strong>DOI:</strong> {{ obj.doi|default:"-" }} &nbsp; <strong>LANGUAGE:</strong> {{ obj.language }}</p>

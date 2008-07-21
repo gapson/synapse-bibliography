@@ -27,14 +27,14 @@ from django.newforms.widgets import flatatt
 from django.core.mail import send_mail, BadHeaderError
 from django.core.paginator import ObjectPaginator, InvalidPage
 from django.core.paginator import QuerySetPaginator
-
+from django.db.models import Q
 
 from rest import RESTView
 from util import BulkParserDispatcher
 from search import search_all
 
 from library.synapse.models import DiseaseManagementTeam, Document, Publication, Source, Keyword, Employee, Announcement
-from library.synapse.forms import BulkLoadForm, AdvancedSearchForm, ExportForm, DMT, CommentForm
+from library.synapse.forms import BulkLoadForm, AdvancedSearchForm, ExportForm, DMT, CommentForm, NewsfeedSearchForm
 from library.synapse import exporters, paginator
 
 from urllib import urlencode
@@ -108,7 +108,37 @@ def build_search_phrase(form):
     search_phrase = ' and '.join(search_phrase)
     return search_phrase
     
-                                
+def newsfeeds(request):
+    form = NewsfeedSearchForm()
+    return render_to_response('synapse/feeds.html', {'is_internal': is_internal(request), 'form': form})
+    
+def newsfeeds_search(request):
+    form = NewsfeedSearchForm(request.POST)
+    if form.is_valid():
+        if form.cleaned_data['author'] != 'Last Name, First':
+            q_list = []
+            authors = form.cleaned_data['author'].split('; ')
+#             results = Employee.objects.all()
+            for author in authors:
+                lname, fname = author.split(', ')
+                q_list.append(Q(last_name__exact=lname, first_name__exact=fname))
+            results = Employee.objects.filter(q_list[0])
+            for q in q_list[0:]:
+                results = results | Employee.objects.filter(q)
+                
+            combined_url = ''
+            if results.count() > 1:
+                ids = [str(emp.id) for emp in results]
+                
+                combined_url = '/'.join(ids)
+                
+            return render_to_response('synapse/feeds.html', {'is_internal': is_internal(request), 'form': form, 'results': results, 'combined_url': combined_url})
+        else:
+            return HttpResponseRedirect('/newsfeeds/')
+    else:
+        return HttpResponseRedirect('/newsfeeds/')
+    
+                
 
 # @login_required    
 def search(request):
@@ -223,19 +253,6 @@ def search(request):
                             'is_internal': is_internal(request),
                             }
                     return render_to_response('synapse/results.html', context)
-#                     return render_to_response('synapse/results.html', Context({'data': search_phrase,
-#                                                                               'publications': results_page.object_list,
-#                                                                               'page': page,
-#                                                                               'pages': paginator.num_pages,
-#                                                                               'page_range': paginator.page_range,
-#                                                                               'has_next': results_page.has_next(),
-#                                                                               'has_previous': results_page.has_previous(),
-#                                                                               'next': next,
-#                                                                               'previous': previous,
-#                                                                               'page_offset': page_offset,
-#                                                                               'uri': full_uri,
-#                                                                               'result_count': result_count,
-#                                                                               'is_internal': is_internal(request)}))
                 else:
                     msg = u'Your search for <em>%s</em> returned no results.  Please broaden your search and try again.' % search_phrase
                     form = AdvancedSearchForm()
