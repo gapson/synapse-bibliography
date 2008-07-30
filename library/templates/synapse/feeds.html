@@ -82,58 +82,166 @@
     <!-- END: announcements -->
     <!-- START: messages -->
     {% if msg %}<div><h2 id="message">{{ msg|safe }}</h2><br><br></div>{% endif %}
-    <div id="feeds_left">
-    <div id="feeds_desc">
-        <h2>News Feeds Provided by Synapse</h2>
-        <p>The main feed is <a href="/feeds/latest/" rel="feed">here</a>, and provides the documents added to Synapse within the last seven days.  Also available are individual feeds for each author, or for multiple authors.  Use the search form below to find the feed for an author or authors.  Simply supply the author's last name, and the form will suggest published authors in our database.  Add additional names after the first to generate a link to the feed of all documents by all the authors.</p>
-    </div>
+
+        <h2><span class="Synapse_name">Synapse</span> News Feeds</h2>
+        <p>Be notified the minute a new item is added to <span class="Synapse_name">Synapse</span> with any of the news feeds listed below.</p>
+        <p><strong>What is a news feed?</strong>  A news feed is a way of letting you know when something has changed on a website.  The website provides a special link 
+        to an XML document that is automatically updated whenever content on the website changes.  Modern web browsers all know how to handle these news feed 
+        links, and you can also subscribe to news feeds in specialized news reader software, or web applications designed to handle news feed reading and agggregation.  
+        </p>
+        
+        <h3>Latest Citations Feed</h3>
+        <p>The <a href="/feeds/latest/" rel="feed">Latest Citations</a> feed provides citations for all documents added to Synapse within the last seven days.</p>
+           <table class="feeds">
+	           <thead>
+	               <tr>
+                       <td>Feed Type</td>
+                       <td>URL</td>
+                       <td>&nbsp;</td>
+                    </tr>
+	           </thead>
+	           <tbody>
+	               <tr>
+	                   <td><a href="/feeds/latest/">Latest Citations</a></td>
+	                   <td><a href="/feeds/latest/">http://synapse.mskcc.org/feeds/latest/</a></td>
+	                   <td><a href="/feeds/latest/"><img src="/media/images/feed.png" alt="Newsfeed Icon" width="16" height="16"></a></td>
+	               </tr>
+	           </tbody>
+	       </table>
+
 	<!-- START: searchForm -->
 
 	<div id="feedSearchForm">
+	   <h3>Author Citations Feeds</h3>
+	         <p>Individual feeds for each author, or for multiple authors, are also available.  Use the search form below to find the feed for an author or authors.  Simply supply the author's last name, and the form will suggest published authors in our database.  Add additional names after the first author, separated by semi-colons (e.g. "Smith, John; Jones, Mary"), to generate a link to the feed of all documents by all the authors.  The feed will contain all citations in the <span class="Synapse_name">Synapse</span> database attributed to the author(s), and will update automatically when new citations by the author(s) are added to the database.</p>
 
 			<form id="feed_search_form" method="post" action="/newsfeeds/search/">
-                <table>
-
-                    <tr><th>{{ form.author.label_tag }}</th><td>{{ form.author }}<br><span class="subtle">{% autoescape off %}{{ form.author.help_text }}{% endautoescape %}</span></td>{% if form.author.errors %}<td>{{ form.author.errors }}</td>{% endif %}</tr>
-
+                <table class="feeds">
+                    <thead>
+                    <tr>
+                        <td>Author Search</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>{{ form.author }}<br><span class="subtle">{% autoescape off %}{{ form.author.help_text }}{% endautoescape %}</span></td>
+                        {% if form.author.errors %}<td>{{ form.author.errors }}</td>{% endif %}
+                    </tr>
+                    </tbody>
                 </table>
 				<div class="clearLeft">&nbsp;</div>
-				<div class="clearBoth"><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" value="    Search    ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="reset" value="    Clear    "></p><br></div>
+				<div class="clearBoth"><p><input type="submit" value="    Search    ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="reset" value="    Clear    "></p><br></div>
 			</form>
 
 	</div>
 	{% if results %}
 	<div id="feedSearchResults">
-	<h2>Individual Author News Feed</h2>
-	{% for result in results %}
-    <p><a href="/feeds/author/{{ result.id }}/" title="Feed for {{ result.first_name }} {{ result.last_name }}">{{ result.first_name }} {{ result.last_name }}</a></p>
-    {% endfor %}
+	<h3>Individual Author News Feed</h3>
+        <table class="feeds">
+            <thead>
+            <tr>
+                <td>Author Feed</td>
+                <td>URL</td>
+                <td>&nbsp;</td>
+            </tr>
+            </thead>
+            <tbody>
+                {% for result in results %}
+                <tr>
+                    <td><a href="/feeds/author/{{ result.id }}/" title="Feed for {{ result.first_name }} {{ result.last_name }}">{{ result.first_name }} {{ result.last_name }}</a></td>
+                    <td><a href="/feeds/author/{{ result.id }}/" title="Feed for {{ result.first_name }} {{ result.last_name }}">http://synapse.mskcc.org/feeds/author/{{ result.id }}/</a></td>
+                    <td><a href="/feeds/author/{{ result.id }}/" title="Feed for {{ result.first_name }} {{ result.last_name }}"><img src="/media/images/feed.png" alt="Newsfeed Icon" width="16" height="16"></a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
 	</div>
 	{% endif %}
 	{% if combined_url %}
 	<div id="combinedFeedSearchResults">
-	<h2>Combined Authors News Feed</h2>
-    <p><a href="/feeds/author/{{ combined_url }}/" title="Combined Feed for authors">Combined Feed</a></p>
+	<h3>Combined Authors News Feed</h3>
+        <table class="feeds">
+        <thead>
+        <tr>
+            <td>Combined Authors Feed</td>
+            <td>URL</td>
+            <td>&nbsp;</td>
+        </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a href="/feeds/author/{{ combined_url }}/" title="Combined Feed for authors">Combined Feed</a></td>
+                <td><a href="/feeds/author/{{ combined_url }}/" title="Combined Feed for authors">http://synapse.mskcc.org/feeds/author/{{ combined_url }}/</a></td>
+                <td><a href="/feeds/author/{{ combined_url }}/" title="Combined Feed for authors"><img src="/media/images/feed.png" alt="Newsfeed Icon" width="16" height="16"></a></td>
+            </tr>
+        </tbody>
+    </table>
+
 	</div>
 	{% endif %}
-	</div>
-	<div id="doc_type_feeds">
-	   <h2>News Feeds by Document Type</h2>
-	   <p>Boilerplate text describing the fact that we offer newsfeeds for each type of document</p>
-	   <p>
-	       <ul>
-	           <li><a href="/feeds/doctype/article/">Articles</a></li>
-	           <li><a href="/feeds/doctype/article_in_press/">Articles in Press</a></li>
-	           <li><a href="/feeds/doctype/book/">Books</a></li>
-	           <li><a href="/feeds/doctype/book_chapter/">Book Chapters</a></li>
-	           <li><a href="/feeds/doctype/conference_paper/">Conference Papers</a></li>
-	           <li><a href="/feeds/doctype/editorial/">Editorials</a></li>
-	           <li><a href="/feeds/doctype/other/">Other</a></li>
-	           <li><a href="/feeds/doctype/review_article/">Review Articles</a></li>
-	           <li><a href="/feeds/doctype/short_survey/">Short Surveys</a></li>
-	           <li><a href="/feeds/doctype/unspecified/">Unspecified</a></li>
-	       </ul>
-	   </p>
+	   <h3>News Feeds by Document Type</h3>
+	   <p>Below we offer newsfeeds for each type of document.  </p>
+	       <table class="feeds">
+	           <thead>
+	               <tr>
+                       <td>Feed Type</td>
+                       <td>URL</td>
+                       <td>&nbsp;</td>
+                    </tr>
+	           </thead>
+	           <tbody>
+	               <tr>
+	                   <td><a href="/feeds/doctype/article/">Articles</a></td>
+	                   <td><a href="/feeds/doctype/article/">http://synapse.mskcc.org/feeds/doctype/article/</a></td>
+	                   <td><a href="/feeds/doctype/article/"><img src="/media/images/feed.png" alt="Newsfeed Icon" width="16" height="16"></a></td>
+	               </tr>
+	               <tr>
+	                   <td><a href="/feeds/doctype/article_in_press/">Articles in Press</a></td>
+	                   <td><a href="/feeds/doctype/article_in_press/">http://synapse.mskcc.org/feeds/doctype/article_in_press/</a></td>
+	                   <td><a href="/feeds/doctype/article_in_press/"><img src="/media/images/feed.png" alt="Newsfeed Icon" width="16" height="16"></a></td>
+	               </tr>
+	               <tr>
+	                   <td><a href="/feeds/doctype/book/">Books</a></td>
+	                   <td><a href="/feeds/doctype/book/">http://synapse.mskcc.org/feeds/doctype/book/</a></td>
+	                   <td><a href="/feeds/doctype/book/"><img src="/media/images/feed.png" alt="Newsfeed Icon" width="16" height="16"></a></td>
+	               </tr>
+	               <tr>
+	                   <td><a href="/feeds/doctype/book_chapter/">Book Chapters</a></td>
+	                   <td><a href="/feeds/doctype/book_chapter/">http://synapse.mskcc.org/feeds/doctype/book_chapter/</a></td>
+	                   <td><a href="/feeds/doctype/book_chapter/"><img src="/media/images/feed.png" alt="Newsfeed Icon" width="16" height="16"></a></td>
+	               </tr>
+	               <tr>
+	                   <td><a href="/feeds/doctype/conference_paper/">Conference Papers</a></td>
+	                   <td><a href="/feeds/doctype/conference_paper/">http://synapse.mskcc.org/feeds/doctype/conference_paper/</a></td>
+	                   <td><a href="/feeds/doctype/conference_paper/"><img src="/media/images/feed.png" alt="Newsfeed Icon" width="16" height="16"></a></td>
+	               </tr>
+	               <tr>
+	                   <td><a href="/feeds/doctype/editorial/">Editorials</a></td>
+	                   <td><a href="/feeds/doctype/editorial/">http://synapse.mskcc.org/feeds/doctype/editorial/</a></td>
+	                   <td><a href="/feeds/doctype/editorial/"><img src="/media/images/feed.png" alt="Newsfeed Icon" width="16" height="16"></a></td>
+	               </tr>
+	               <tr>
+	                   <td><a href="/feeds/doctype/other/">Other</a></td>
+	                   <td><a href="/feeds/doctype/other/">http://synapse.mskcc.org/feeds/doctype/other/</a></td>
+	                   <td><a href="/feeds/doctype/other/"><img src="/media/images/feed.png" alt="Newsfeed Icon" width="16" height="16"></a></td>
+	               </tr>
+	               <tr>
+	                   <td><a href="/feeds/doctype/review_article/">Review Articles</a></td>
+	                   <td><a href="/feeds/doctype/review_article/">http://synapse.mskcc.org/feeds/doctype/review_article/</a></td>
+	                   <td><a href="/feeds/doctype/review_article/"><img src="/media/images/feed.png" alt="Newsfeed Icon" width="16" height="16"></a></td>
+	               </tr>
+	               <tr>
+	                   <td><a href="/feeds/doctype/short_survey/">Short Surveys</a></td>
+	                   <td><a href="/feeds/doctype/short_survey/">http://synapse.mskcc.org/feeds/doctype/short_survey/</a></td>
+	                   <td><a href="/feeds/doctype/short_survey/"><img src="/media/images/feed.png" alt="Newsfeed Icon" width="16" height="16"></a></td>
+	               </tr>
+	               <tr>
+	                   <td><a href="/feeds/doctype/unspecified/">Unspecified</a></td>
+	                   <td><a href="/feeds/doctype/unspecified/">http://synapse.mskcc.org/feeds/doctype/unspecified/</a></td>
+	                   <td><a href="/feeds/doctype/unspecified/"><img src="/media/images/feed.png" alt="Newsfeed Icon" width="16" height="16"></a></td>
+	               </tr>
+	           </tbody>
+	       </table>
     </div>
 
 	<!-- END: searchForm -->

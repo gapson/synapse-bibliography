@@ -15,11 +15,11 @@ fieldset { padding: 0; border: none; }
 h2 { font-size: 1.2em; }*/
 h1 { font-size: 1.4em; padding-bottom:1em; }
 h2 { font-size: 1.2em; padding-bottom:1em; }
-h3 { font-size: 1em; padding-bottom:.5em; padding-left:2em; }
+h3 { font-size: 1.1em; padding-bottom:.5em; padding-left:2em; padding-top:1.5em;}
 
 
 /* font coloration */
-h1, h2, blockquote, label { color: #541805; }
+h1, h2, h3, blockquote, label { color: #541805; }
 a:hover { color: #708CBA; text-decoration: none; }
 a:link {color: #541805; }
 
@@ -59,7 +59,7 @@ div#navigation div.navigation_title a#title_link { color: #541805; }
 div#navigation div.navigation_title a:hover { color: #708CBA; text-decoration: none; }
 
 /* right pane */
-div#rightPane { width: 80%; float: left;}
+div#rightPane { width: 80%; float: right;}
 
 /* main content */
 div#main_content a { color: #541805; }
@@ -158,7 +158,7 @@ div#feeds_left {
     }
 
 div#doc_type_feeds {
-    width: 30%
+/*     width: 30%; */
     float: right;
 /*     padding-left: 5em; */
 /*     clear: right; */
@@ -233,3 +233,27 @@ span.next-na {}
 /*     line-height: 1.0em; */
 
     }
+    
+table.feeds {
+    background-color: #c9b762;
+	margin:10px 0pt 15px;
+	text-align: left;
+}
+
+table.feeds thead tr, table#doc_types tfoot tr {
+	background-color: #c9b762;
+	padding: 4px;
+}
+
+table.feeds thead tr td {
+/*     	margin-left: 15px; */
+    	padding-left: 10px;
+    	font-weight: 600;
+    	color: #541805;
+}
+
+table.feeds tbody td {
+	padding: 4px;
+	background-color: #FFF;
+	vertical-align: top;
+}
