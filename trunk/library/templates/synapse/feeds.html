@@ -13,6 +13,8 @@
         <script type="text/javascript" src="/media/js/jquery.dimensions.js"></script>
 
         <script type="text/javascript" src="/media/js/jquery.autocomplete.js"></script>
+        
+        <script type="text/javascript" src="/media/js/jquery.expander.js"></script>
 
         <script type="text/javascript">
         $(document).ready(function() {
@@ -69,6 +71,10 @@
 
             populateElement('#id_author', 'Last Name, First');
             
+            $('div#expandable p').expander({
+                userCollapseText: 'less...'
+                });
+            
         });
 
         </script>
@@ -85,10 +91,12 @@
 
         <h2><span class="Synapse_name">Synapse</span> News Feeds</h2>
         <p>Be notified the minute a new item is added to <span class="Synapse_name">Synapse</span> with any of the news feeds listed below.</p>
+        <div id="expandable">
         <p><strong>What is a news feed?</strong>  A news feed is a way of letting you know when something has changed on a website.  The website provides a special link 
         to an XML document that is automatically updated whenever content on the website changes.  Modern web browsers all know how to handle these news feed 
         links, and you can also subscribe to news feeds in specialized news reader software, or web applications designed to handle news feed reading and aggregation.  
         </p>
+        </div>
         
         <h3>Latest Citations Feed</h3>
         <p>The <a href="/feeds/latest/" rel="feed">Latest Citations</a> feed provides citations for all documents added to Synapse within the last seven days.</p>
