@@ -59,7 +59,10 @@ div#navigation div.navigation_title a#title_link { color: #541805; }
 div#navigation div.navigation_title a:hover { color: #708CBA; text-decoration: none; }
 
 /* right pane */
-div#rightPane { width: 80%; float: right;}
+div#rightPane { 
+    width: 80%; 
+    float: left;
+    }
 
 /* main content */
 div#main_content a { color: #541805; }
