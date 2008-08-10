@@ -58,8 +58,7 @@ class EmployeeParser(object):
     def create_new_departments(self):
         """creates any departments that are not already in the database"""
         for row in self.get_reader():
-            Department.objects.get_or_create(cost_center=row['DEPTID'], defaults={'name': row['DEPARTMENT NAME'],
-                                             'short_name': row['DEPARTMENT NAME']})
+            Department.objects.get_or_create(cost_center=row['DEPTID'], defaults={'name': row['DEPARTMENT NAME']})
         return None
         
     def create_new_employees(self):

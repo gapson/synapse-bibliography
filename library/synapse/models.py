@@ -33,11 +33,11 @@ class Announcement(models.Model):
         get_latest_by = "pub_date"
         ordering = ['-pub_date', 'title']
         
-    class Admin:
-        date_hierarchy = 'pub_date'
-        list_display = ['title', 'pub_date']
-        list_filter = ['pub_date', 'create_date', 'show']
-        search_fields = ['title', 'body']
+#     class Admin:
+#         date_hierarchy = 'pub_date'
+#         list_display = ['title', 'pub_date']
+#         list_filter = ['pub_date', 'create_date', 'show']
+#         search_fields = ['title', 'body']
         
     def __unicode__(self):
         return u'%s %s' % (self.pub_date, self.title)
@@ -56,10 +56,10 @@ class Employee(models.Model):
     photo = models.ImageField(upload_to='photos', null=True, blank=True)
     currently_employed = models.BooleanField(default=True)
     
-    class Admin:
-        list_display = ('last_name', 'first_name', 'middle_name', 'emp_id', 'job_title')
-        list_filter = ['currently_employed', 'job_title']
-        search_fields = ['last_name', 'first_name', 'middle_name', 'emp_id']
+#     class Admin:
+#         list_display = ('last_name', 'first_name', 'middle_name', 'emp_id', 'job_title')
+#         list_filter = ['currently_employed', 'job_title']
+#         search_fields = ['last_name', 'first_name', 'middle_name', 'emp_id']
         
     class Meta:
         ordering = ['last_name', 'first_name', 'middle_name', 'emp_id']
@@ -84,7 +84,7 @@ class Grant(models.Model):
 class Department(models.Model):
     name = models.CharField(max_length=250, db_index=True)
     cost_center = models.CharField(max_length=5, blank=True, db_index=True) #, unique=True)
-    short_name = models.SlugField(prepopulate_from=(("name"),), db_index=True)
+#     short_name = models.SlugField(prepopulate_from=(("name"),), db_index=True)
     
     def __unicode__(self):
         return u'%s' % self.name
@@ -101,13 +101,13 @@ class Department(models.Model):
 class EmployeeDepartment(models.Model):
     year_begin = models.IntegerField(max_length=4, null=True, blank=True)
     year_end = models.IntegerField(max_length=4, null=True, blank=True)
-    employee = models.ForeignKey(Employee)
-    department = models.ForeignKey(Department)
+    employee = models.ForeignKey(Employee, core=True)
+    department = models.ForeignKey(Department, core=True)
     
-    class Admin:
-        list_display = ('employee', 'department', 'year_begin', 'year_end')
-        list_filter = ['department']
-        search_fields = ['employee__last_name']
+#     class Admin:
+#         list_display = ('employee', 'department', 'year_begin', 'year_end')
+#         list_filter = ['department']
+#         search_fields = ['employee__last_name']
         
     class Meta:
         ordering = ['employee', 'department', '-year_begin']
@@ -116,13 +116,13 @@ class EmployeeDepartment(models.Model):
     
 class Institution(models.Model):
     name = models.CharField(max_length=150, core=True, db_index=True)
-    short_name = models.SlugField(prepopulate_from=(("name"),), db_index=True, core=True)
+#     short_name = models.SlugField(prepopulate_from=(("name"),), db_index=True, core=True)
     
     def __unicode__(self):
         return u'%s' % self.name
     
-    class Admin:
-        pass
+#     class Admin:
+#         pass
 
 
     
@@ -132,8 +132,8 @@ class DiseaseManagementTeam(models.Model):
     def __unicode__(self):
         return u'%s' % self.name
     
-    class Admin:
-        pass
+#     class Admin:
+#         pass
         
     class Meta:
         ordering = ['name']
@@ -143,7 +143,7 @@ class DiseaseManagementTeam(models.Model):
 class Document(models.Model):
     title = models.CharField(max_length=500, db_index=True)
     stripped_title = models.CharField(max_length=500, db_index=True, blank=True)
-    short_title = models.SlugField(prepopulate_from=(("title",)), blank=True, db_index=True)
+#     short_title = models.SlugField(prepopulate_from=(("title",)), blank=True, db_index=True)
     doi = models.CharField('Digital Object Identifier', max_length=300, blank=True, db_index=True) #, unique=True)
     abstract = models.TextField(blank=True)
     author_names = models.CharField(max_length=6200, db_index=True)
@@ -216,8 +216,8 @@ class Publisher(models.Model):
     name = models.CharField(max_length=250, db_index=True)
     sources = models.ManyToManyField('Source', null=True, blank=True)
     
-    class Admin:
-        search_fields = ['name', 'sources']
+#     class Admin:
+#         search_fields = ['name', 'sources']
     
     class Meta:
         ordering = ['name']
@@ -239,9 +239,9 @@ class Source(models.Model):
     es_number = models.CharField(max_length=17, db_index=True, blank=True) #, unique=True)
     is_type = models.CharField(max_length=4, choices=IS_TYPE_CHOICES, blank=True)
     
-    class Admin:
-        search_fields = ['name', 'is_number']
-        list_filter = ['is_type', 'publication_type']
+#     class Admin:
+#         search_fields = ['name', 'is_number']
+#         list_filter = ['is_type', 'publication_type']
         
     class Meta:
         ordering = ['name']
@@ -259,8 +259,8 @@ class Impact(models.Model):
 class NameOrder(models.Model):
     order = models.CharField(max_length=11)
     
-    class Admin:
-        list_display = ('order', )
+#     class Admin:
+#         list_display = ('order', )
         
     def __unicode__(self):
         return u'%s' % self.order
@@ -268,16 +268,16 @@ class NameOrder(models.Model):
         
                 
 class Publication(models.Model):
-    author_name = models.CharField("Author's Name Variation", max_length=150, db_index=True)
+    author_name = models.CharField("Author's Name Variation", max_length=150, db_index=True, core=True)
     name_order = models.ForeignKey(NameOrder)
     institution = models.ForeignKey(Institution, null=True, blank=True, db_index=True)
     affiliation = models.CharField(max_length=2400, blank=True, db_index=True)
-    document = models.ForeignKey(Document, db_index=True)
+    document = models.ForeignKey(Document, db_index=True, core=True)
     author = models.ForeignKey(Employee, null=True, blank=True, db_index=True)
     
-    class Admin:
-#         list_display = ['document', 'author_name']
-        search_fields = ['author_name'] #, 'document__title']
+#     class Admin:
+# #         list_display = ['document', 'author_name']
+#         search_fields = ['author_name'] #, 'document__title']
         
     def __unicode__(self):
         return u'Title: %s  Author: %s' % (self.document.title, self.author_name)

@@ -16,7 +16,7 @@
 #     along with Synapse.  If not, see <http://www.gnu.org/licenses/>.
 from itertools import chain
 
-from django import newforms as forms
+from django import forms
 from django.utils.encoding import force_unicode
 from django.utils.html import escape
 
