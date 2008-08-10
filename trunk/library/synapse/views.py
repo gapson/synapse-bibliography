@@ -23,9 +23,10 @@ from django.shortcuts import get_object_or_404, render_to_response
 from django.template import Context
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseRedirect, Http404
 from django.core.urlresolvers import reverse
-from django.newforms.widgets import flatatt
+# from django.newforms.widgets import flatatt
+from django.forms.widgets import flatatt
 from django.core.mail import send_mail, BadHeaderError
-from django.core.paginator import ObjectPaginator, InvalidPage
+from django.core.paginator import InvalidPage
 from django.core.paginator import QuerySetPaginator
 from django.db.models import Q
 
@@ -66,7 +67,8 @@ def bulk_upload(request):
             file_type = form.cleaned_data['file_type']
             year = form.cleaned_data['year']
             dmt = form.cleaned_data['dmt']
-            content = request.FILES['bulk_file']['content']
+#             content = request.FILES['bulk_file']['content']
+            content = request.FILES['bulk_file'].read()
             # parser is a file parser instance of appropriate type that's been passed the content
             dispatcher = BulkParserDispatcher(file_type, content, year, dmt)
             status = dispatcher.parser.parse()
@@ -118,11 +120,11 @@ def newsfeeds_search(request):
         if form.cleaned_data['author'] != 'Last Name, First':
             q_list = []
             authors = form.cleaned_data['author'].rstrip('; ').split('; ')
-#             results = Employee.objects.all()
+            results = Employee.objects.all()
             for author in authors:
                 if author:
                     lname, fname = author.split(', ')
-                    q_list.append(Q(last_name__exact=lname, first_name__exact=fname))
+                    q_list.append(Q(last_name__iexact=lname, first_name__iexact=fname))
             results = Employee.objects.filter(q_list[0])
             for q in q_list[0:]:
                 results = results | Employee.objects.filter(q)

@@ -1,4 +1,5 @@
 from django.conf.urls.defaults import *
+from django.contrib import admin
 
 from library.synapse.feeds import LatestDocuments, LatestDocumentsByAuthor, LatestDocumentsByDocType
 
@@ -7,13 +8,15 @@ feeds = {
     'author': LatestDocumentsByAuthor,
     'doctype': LatestDocumentsByDocType,
     }
+    
+admin.autodiscover()
 
 urlpatterns = patterns('',
     # Example:
     # (r'^library/', include('library.foo.urls')),
 
     # Uncomment this for admin:
-     (r'^admin/', include('django.contrib.admin.urls')),
+     (r'^admin/(.*)', admin.site.root),
      
      (r'^bulkload/$', 'library.synapse.views.bulk_upload'),
      (r'^duplicates/$', 'library.synapse.views.duplicates'),
