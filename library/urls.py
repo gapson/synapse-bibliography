@@ -2,6 +2,7 @@ from django.conf.urls.defaults import *
 from django.contrib import admin
 
 from library.synapse.feeds import LatestDocuments, LatestDocumentsByAuthor, LatestDocumentsByDocType
+# from library.synapse.api.xml import xml_source_resource, xml_publisher_resource, xml_document_resource, xml_employee_resource, xml_department_resource
 
 feeds = {
     'latest': LatestDocuments,
@@ -39,4 +40,5 @@ urlpatterns = patterns('',
      (r'^feeds/(?P<url>.*)/$', 'django.contrib.syndication.views.feed', {'feed_dict': feeds}),
 #      (r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': '/Users/herndonp/Projects/Work/django/library/media'} ),
      (r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': '/Users/herndonp/Projects/Work/django/googlesvn/synapse-bibliography/library/media'} ),
+     (r'^api/v1/xml/', include('synapse.api.xml.urls')),
 )
