@@ -21,6 +21,8 @@
 from django.db import models
 import datetime
 
+from library.synapse.util import remove_punctuation, is_number_normalize
+
 
 class Announcement(models.Model):
     title = models.CharField(max_length=300, db_index=True)
@@ -189,6 +191,10 @@ class Document(models.Model):
             return None
         
     def save(self):
+        if not self.stripped_title:
+            self.stripped_title = remove_punctuation(self.title)
+        if not self.stripped_author_names:
+            self.stripped_author_names = remove_punctuation(self.author_names)
         self.mod_date = datetime.datetime.now()
         super(Document, self).save()
     
@@ -248,6 +254,13 @@ class Source(models.Model):
     
     def __unicode__(self):
         return u'%s' % self.name
+        
+    def save(self):
+        if self.is_number:
+            self.is_number = is_number_normalize(self.is_number)
+        if self.es_number:
+            self.es_number = is_number_normalize(self.es_number)
+        super(Source, self).save()
 
     
 class Impact(models.Model):
