@@ -41,4 +41,5 @@ urlpatterns = patterns('',
 #      (r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': '/Users/herndonp/Projects/Work/django/library/media'} ),
      (r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': '/Users/herndonp/Projects/Work/django/googlesvn/synapse-bibliography/library/media'} ),
      (r'^api/v1/xml/', include('synapse.api.xml.urls')),
+     (r'^api/v1/json/', include('synapse.api.json.urls')),
 )
