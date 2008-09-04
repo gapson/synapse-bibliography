@@ -103,8 +103,8 @@ class Department(models.Model):
 class EmployeeDepartment(models.Model):
     year_begin = models.IntegerField(max_length=4, null=True, blank=True)
     year_end = models.IntegerField(max_length=4, null=True, blank=True)
-    employee = models.ForeignKey(Employee, core=True)
-    department = models.ForeignKey(Department, core=True)
+    employee = models.ForeignKey(Employee)
+    department = models.ForeignKey(Department)
     
 #     class Admin:
 #         list_display = ('employee', 'department', 'year_begin', 'year_end')
@@ -117,7 +117,7 @@ class EmployeeDepartment(models.Model):
 
     
 class Institution(models.Model):
-    name = models.CharField(max_length=150, core=True, db_index=True)
+    name = models.CharField(max_length=150, db_index=True)
 #     short_name = models.SlugField(prepopulate_from=(("name"),), db_index=True, core=True)
     
     def __unicode__(self):
@@ -129,7 +129,7 @@ class Institution(models.Model):
 
     
 class DiseaseManagementTeam(models.Model):
-    name = models.CharField('Disease Management Team', max_length=250, core=True, db_index=True)
+    name = models.CharField('Disease Management Team', max_length=250, db_index=True)
     
     def __unicode__(self):
         return u'%s' % self.name
@@ -210,8 +210,8 @@ class Document(models.Model):
 
     
 class Keyword(models.Model):
-    term = models.CharField(max_length=2800, core=True, db_index=True)
-    document = models.ForeignKey(Document, edit_inline=True)
+    term = models.CharField(max_length=2800, db_index=True)
+    document = models.ForeignKey(Document)
 
     def __unicode__(self):
         return u'%s' % self.term
@@ -264,9 +264,9 @@ class Source(models.Model):
 
     
 class Impact(models.Model):
-    value = models.CharField(max_length=20, core=True)
-    year = models.IntegerField(core=True)
-    source_id = models.ForeignKey(Source, edit_inline=True)
+    value = models.CharField(max_length=20)
+    year = models.IntegerField()
+    source_id = models.ForeignKey(Source)
 
 
 class NameOrder(models.Model):
@@ -281,11 +281,11 @@ class NameOrder(models.Model):
         
                 
 class Publication(models.Model):
-    author_name = models.CharField("Author's Name Variation", max_length=150, db_index=True, core=True)
+    author_name = models.CharField("Author's Name Variation", max_length=150, db_index=True)
     name_order = models.ForeignKey(NameOrder)
     institution = models.ForeignKey(Institution, null=True, blank=True, db_index=True)
     affiliation = models.CharField(max_length=2400, blank=True, db_index=True)
-    document = models.ForeignKey(Document, db_index=True, core=True)
+    document = models.ForeignKey(Document, db_index=True)
     author = models.ForeignKey(Employee, null=True, blank=True, db_index=True)
     
 #     class Admin:
