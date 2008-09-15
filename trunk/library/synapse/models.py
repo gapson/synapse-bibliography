@@ -211,7 +211,7 @@ class Document(models.Model):
     
 class Keyword(models.Model):
     term = models.CharField(max_length=2800, db_index=True)
-    document = models.ForeignKey(Document, blank=True)
+    document = models.ForeignKey(Document, blank=True, null=True)
 
     def __unicode__(self):
         return u'%s' % self.term
