@@ -83,32 +83,39 @@ def duplicates(request):
                                 
 def build_search_phrase(form):
     search_phrase = []
+    just_author = True
     if form.cleaned_data['author'] and not form.cleaned_data['author'] == 'Last Name, First':
         author = form.cleaned_data['author'].strip().strip(';')
         search_phrase.append(author)
     
     if form.cleaned_data['journal'] and not form.cleaned_data['journal'] == 'Ex: Blood':
         search_phrase.append(form.cleaned_data['journal'])
+        just_author=False
         
     if form.cleaned_data['keywords'] and not form.cleaned_data['keywords'] == 'Ex: melanoma':
         search_phrase.append(form.cleaned_data['keywords'])
+        just_author=False
         
     if form.cleaned_data['dmt'] and not form.cleaned_data['dmt'] == '0':
+        just_author=False
         for dmt_id, name in DMT:
             if dmt_id == int(form.cleaned_data['dmt']):
                 search_phrase.append(' '.join(('DMT:',name)))
         
     if form.cleaned_data['doc_type']:
+        just_author=False
         search_phrase.extend(form.cleaned_data['doc_type'])
     
     if form.cleaned_data['year_start'] and not form.cleaned_data['year_start'] == 'BLANK':
+        just_author=False
         search_phrase.append('From %s' % form.cleaned_data['year_start'])
 
     if form.cleaned_data['year_end'] and not form.cleaned_data['year_end'] == 'BLANK':
+        just_author=False
         search_phrase.append('To %s' % form.cleaned_data['year_end'])
         
     search_phrase = ' and '.join(search_phrase)
-    return search_phrase
+    return (search_phrase, just_author)
     
 def newsfeeds(request):
     form = NewsfeedSearchForm()
@@ -168,7 +175,7 @@ def search(request):
                 result_count = len(results)
 #                 print result_count
 
-                search_phrase = build_search_phrase(form)
+                search_phrase, just_author = build_search_phrase(form)
                 
                 if results:
                     paginator = QuerySetPaginator(results, 200)
@@ -179,7 +186,10 @@ def search(request):
                         # print "Result Count: ", result_count
                     except TypeError:
     #                     result_count = 0
-                        msg = u'Your search for <em>%s</em> returned no results.  Please broaden your search and try again.' % search_phrase
+                        if just_author:
+                            msg = u'Your search for <em>%s</em> returned no results.  If this is an MSK author, please contact <a href="/comments/" alt="Synapse Comments" title="Synapse Comments">the Synapse Administrators</a>.' % search_phrase
+                        else:
+                            msg = u'Your search for <em>%s</em> returned no results.  Please broaden your search and try again.' % search_phrase
                         form = AdvancedSearchForm()
                         return render_to_response('synapse/search.html', {'form': form, 'show_dmt': False, 'is_internal': is_internal(request), 'msg':msg })
                         
@@ -257,7 +267,10 @@ def search(request):
                             }
                     return render_to_response('synapse/results.html', context)
                 else:
-                    msg = u'Your search for <em>%s</em> returned no results.  Please broaden your search and try again.' % search_phrase
+                    if just_author:
+                        msg = u'Your search for <em>%s</em> returned no results.  If this is an MSK author, please contact <a href="/comments/" alt="Synapse Comments" title="Synapse Comments">the Synapse Administrators</a>.' % search_phrase
+                    else:
+                        msg = u'Your search for <em>%s</em> returned no results.  Please broaden your search and try again.' % search_phrase
                     form = AdvancedSearchForm()
                     return render_to_response('synapse/search.html', {'form': form, 'show_dmt': False, 'is_internal': is_internal(request), 'msg':msg })
 
