@@ -44,9 +44,9 @@ class Announcement(models.Model):
     def __unicode__(self):
         return u'%s %s' % (self.pub_date, self.title)
         
-    def save(self):
+    def save(self, force_insert=False, force_update=False):
         self.pub_date = datetime.datetime.now()
-        super(Announcement, self).save()
+        super(Announcement, self).save(force_insert, force_update)
 
 
 class Employee(models.Model):
@@ -190,13 +190,13 @@ class Document(models.Model):
         else:
             return None
         
-    def save(self):
+    def save(self, force_insert=False, force_update=False):
         if not self.stripped_title:
             self.stripped_title = remove_punctuation(self.title)
         if not self.stripped_author_names:
             self.stripped_author_names = remove_punctuation(self.author_names)
         self.mod_date = datetime.datetime.now()
-        super(Document, self).save()
+        super(Document, self).save(force_insert, force_update)
     
     
     class Admin:
@@ -255,12 +255,12 @@ class Source(models.Model):
     def __unicode__(self):
         return u'%s' % self.name
         
-    def save(self):
+    def save(self, force_insert=False, force_update=False):
         if self.is_number:
             self.is_number = is_number_normalize(self.is_number)
         if self.es_number:
             self.es_number = is_number_normalize(self.es_number)
-        super(Source, self).save()
+        super(Source, self).save(force_insert, force_update)
 
     
 class Impact(models.Model):
