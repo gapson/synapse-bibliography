@@ -192,12 +192,13 @@ class CINAHLParser(object):
             
         record_begin = begin_record.match(line)
         if record_begin:
-            try:
-                self.record.clean()
-                self.records.append(self.record)
-            except AttributeError, e:
-                pass
+#            try:
+#                self.record.clean()
+#                self.records.append(self.record)
+#            except AttributeError, e:
+#                pass
             self.record = Record()
+            self.records.append(self.record)
             return None
             
         field = begin_field.match(line)
@@ -309,6 +310,7 @@ class CINAHLHandler(object):
             self.parser.handle_line(line)
         
         for record in self.parser.records:
+            record.clean()
             publisher = loader.create_publisher(record)
             source = loader.create_source(record, publisher)
             loader.associate_publisher_and_source(publisher, source)
