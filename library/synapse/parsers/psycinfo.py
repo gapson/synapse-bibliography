@@ -28,7 +28,9 @@ import datetime
 import re
 import string
 
-begin_record = re.compile(r'^<(\d+)>\r?$')    #finish me -- done for the moment
+import sys, traceback
+
+begin_record = re.compile(r'^<(\d+)> \r?$')    #finish me -- done for the moment
 begin_field = re.compile (r'^(\w\w)\s\s-\s(.*?)\r?$')
 continue_field = re.compile (r'^\s{6,6}(.*?)\r?$')
 
@@ -143,7 +145,6 @@ class Record(object):
                 
 
     def clean(self):
-        print "entering clean()"
         self.title = ' '.join(self.title)
         self.title = self.title.strip('.')
         self.abstract = ' '.join(self.abstract)
@@ -153,12 +154,16 @@ class Record(object):
         if ' ' in self.isnumber:
             self.isnumber = self.isnumber.split()[0]
         self._clean_keywords()
-        self._clean_source()
+        #self._clean_source()
         if self.publisher.startswith('http'):
             self.publisher = ''
 
 
 class PSYCINFOParser(object):
+    """
+    Thoughts:  try creating records, appending them, then cleaning them in a way that makes the whole ting
+    work properly -- loop through the content, creating records and appending them, then clean them afterwards
+    """
     def __init__(self, content):
         self.content = content
         self._store_upload()
@@ -181,16 +186,29 @@ class PSYCINFOParser(object):
         
     def handle_line(self, line):
         if line.strip() == '':
+#            try:
+#                self.record.clean()
+#                self.records.append(self.record)
+#                print len(self.records)
+#            except AttributeError, e:
+#                print "AttributeError: ", AttributeError, e
+#                traceback.print_exc()
+#                pass
             return None
             
         record_begin = begin_record.match(line)
         if record_begin:
-            try:
-                self.record.clean()
-                self.records.append(self.record)
-            except AttributeError, e:
-                pass
+#            print "record_begin: ", record_begin
+#            try:
+#                self.record.clean()
+#                self.records.append(self.record)
+#            except AttributeError, e:
+#                print "AttributeError: ", AttributeError, e
+#                traceback.print_exc()
+#                pass
             self.record = Record()
+            self.records.append(self.record)
+#            print self.record, self.record.__dict__.items()
             return None
             
         field = begin_field.match(line)
@@ -235,8 +253,12 @@ class PSYCINFOParser(object):
     def AU(self):
         self.record.authors = self.data
                 
-    def SO(self):
-        self.record.source = self.data  # combined field, needs parsing
+#    def SO(self):
+#        self.record.source = self.data  # combined field, needs parsing
+        
+    def JN(self):
+        self.record.source = self.data[0]
+#        print "self.record.source: ", self.record.source
         
     def YR(self):
         self.record.publish_year = int(self.data[0])  # maybe add in length checking
@@ -304,6 +326,9 @@ class PSYCINFOHandler(object):
             self.parser.handle_line(line)
         
         for record in self.parser.records:
+            record.clean()
+#            print "record: ", record
+#            print record.__dict__.items()
             publisher = loader.create_publisher(record)
             source = loader.create_source(record, publisher)
             loader.associate_publisher_and_source(publisher, source)
