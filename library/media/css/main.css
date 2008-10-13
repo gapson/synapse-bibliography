@@ -48,7 +48,7 @@ div.logo_bar { background-color: #541805;
     }
 
 /* the navigation */
-div#navigation { float: left; width: 15%; border: solid 2px #541805; margin: 0px 10px 20px 10px;}
+div#navigation { float: left; width: 16%; border: solid 2px #541805; margin: 0px 10px 20px 10px;}
 div#navigation a { color: #541805; }
 div#navigation a:hover { color: #708CBA; text-decoration: none; }
 
@@ -241,6 +241,7 @@ table.feeds {
     background-color: #c9b762;
 	margin:10px 0pt 15px;
 	text-align: left;
+	width: 100%;
 }
 
 table.feeds thead tr, table#doc_types tfoot tr {

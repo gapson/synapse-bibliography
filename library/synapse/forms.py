@@ -135,7 +135,7 @@ class AdvancedSearchForm(forms.Form):
     doc_type = forms.MultipleChoiceField(choices=DOC_TYPE, widget=TabularCheckboxSelectMultiple(choices=DOC_TYPE, attrs={'class':'inner'}), label='Document type', required=False)
 
 class NewsfeedSearchForm(forms.Form):
-    author = forms.CharField(required=True, help_text="Enter author's name last name first", widget=forms.TextInput(attrs={'autocomplete':'off', 'title':'MSKCC authors'}))
+    author = forms.CharField(required=True, help_text="Example: <em>Smith, John; Jones, Mary</em>", widget=forms.TextInput(attrs={'size':'60', 'autocomplete':'off', 'title':'MSKCC authors'}))
 
 
 class ExportForm(forms.Form):
