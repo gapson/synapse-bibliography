@@ -71,7 +71,7 @@
 
             populateElement('#id_author', 'Last Name, First');
             
-            $('div#expandable p').expander({
+            $('div.expandable p').expander({
                 userCollapseText: 'less...'
                 });
             
@@ -91,7 +91,7 @@
 
         <h2><span class="Synapse_name">Synapse</span> News Feeds</h2>
         <p>Be notified the minute a new item is added to <span class="Synapse_name">Synapse</span> with any of the news feeds listed below.</p>
-        <div id="expandable">
+        <div class="expandable">
         <p><strong>What is a news feed?</strong>  A news feed is a way of letting you know when something has changed on a website.  The website provides a special link 
         to an XML document that is automatically updated whenever content on the website changes.  Modern web browsers all know how to handle these news feed 
         links, and you can also subscribe to news feeds in specialized news reader software, or web applications designed to handle news feed reading and aggregation.  
@@ -99,7 +99,7 @@
         </div>
         
         <h3>Latest Citations Feed</h3>
-        <p>The <a href="/feeds/latest/" rel="feed">Latest Citations</a> feed provides citations for all documents added to Synapse within the last seven days.</p>
+        <p>The <a href="/feeds/latest/" rel="feed">Latest Citations</a> feed provides citations for all documents added to <span class="Synapse_name">Synapse</span> within the last seven days.</p>
            <table class="feeds">
 	           <thead>
 	               <tr>
@@ -121,7 +121,6 @@
 
 	<div id="feedSearchForm">
 	   <h3>Author Citations Feeds</h3>
-	         <p>Individual feeds for each author, or for multiple authors, are also available.  Use the search form below to find the feed for an author or authors.  Simply supply the author's last name, and the form will suggest published authors in our database.  Add additional names after the first author, separated by semi-colons (e.g. "Smith, John; Jones, Mary"), to generate a link to the feed of all documents by all the authors.  The feed will contain all citations in the <span class="Synapse_name">Synapse</span> database attributed to the author(s), and will update automatically when new citations by the author(s) are added to the database.</p>
 
 			<form id="feed_search_form" method="post" action="/newsfeeds/search/">
                 <table class="feeds">
@@ -135,11 +134,21 @@
                         <td>{{ form.author }}<br><span class="subtle">{% autoescape off %}{{ form.author.help_text }}{% endautoescape %}</span></td>
                         {% if form.author.errors %}<td>{{ form.author.errors }}</td>{% endif %}
                     </tr>
+                    <tr>
+                    <td>
+                    <input type="submit" value="    Search    ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="reset" value="    Clear    ">
+                    </td>
+                    </tr>
                     </tbody>
                 </table>
+<!--
 				<div class="clearLeft">&nbsp;</div>
 				<div class="clearBoth"><p><input type="submit" value="    Search    ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="reset" value="    Clear    "></p><br></div>
+-->
 			</form>
+			<div class="expandable">
+            <p>Author feeds provide all citations in <span class="Synapse_name">Synapse</span> for one or more authors, and will update automatically when new citations by the author(s) are added to the database. Use the search form above to find the feed for an author or authors.</p>
+            </div>
 
 	</div>
 	{% if results %}
@@ -229,11 +238,6 @@
 	                   <td><a href="/feeds/doctype/editorial/"><img src="/media/images/feed.png" alt="Newsfeed Icon" width="16" height="16"></a></td>
 	               </tr>
 	               <tr>
-	                   <td><a href="/feeds/doctype/other/">Other</a></td>
-	                   <td><a href="/feeds/doctype/other/">http://synapse.mskcc.org/feeds/doctype/other/</a></td>
-	                   <td><a href="/feeds/doctype/other/"><img src="/media/images/feed.png" alt="Newsfeed Icon" width="16" height="16"></a></td>
-	               </tr>
-	               <tr>
 	                   <td><a href="/feeds/doctype/review_article/">Review Articles</a></td>
 	                   <td><a href="/feeds/doctype/review_article/">http://synapse.mskcc.org/feeds/doctype/review_article/</a></td>
 	                   <td><a href="/feeds/doctype/review_article/"><img src="/media/images/feed.png" alt="Newsfeed Icon" width="16" height="16"></a></td>
@@ -242,11 +246,6 @@
 	                   <td><a href="/feeds/doctype/short_survey/">Short Surveys</a></td>
 	                   <td><a href="/feeds/doctype/short_survey/">http://synapse.mskcc.org/feeds/doctype/short_survey/</a></td>
 	                   <td><a href="/feeds/doctype/short_survey/"><img src="/media/images/feed.png" alt="Newsfeed Icon" width="16" height="16"></a></td>
-	               </tr>
-	               <tr>
-	                   <td><a href="/feeds/doctype/unspecified/">Unspecified</a></td>
-	                   <td><a href="/feeds/doctype/unspecified/">http://synapse.mskcc.org/feeds/doctype/unspecified/</a></td>
-	                   <td><a href="/feeds/doctype/unspecified/"><img src="/media/images/feed.png" alt="Newsfeed Icon" width="16" height="16"></a></td>
 	               </tr>
 	           </tbody>
 	       </table>
