@@ -10,7 +10,7 @@
  */
 
 
-(function($) {
+;(function($) {
 
   $.fn.expander = function(options) {
 
@@ -59,7 +59,7 @@
               }
             }
           }
-          endText = cleanedTag + endText;
+          endText = cleanedTag ? cleanedTag + endText : endText;
         }
      	  $this.html([
      		startText,

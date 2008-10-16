@@ -99,7 +99,9 @@
         </div>
         
         <h3>Latest Citations Feed</h3>
-        <p>The <a href="/feeds/latest/" rel="feed">Latest Citations</a> feed provides citations for all documents added to <span class="Synapse_name">Synapse</span> within the last seven days.</p>
+        <div class="expandable">
+        <p>The <a href="/feeds/latest/" rel="feed">Latest Citations</a> feed provides citations for all documents added to <span class="Synapse_name">Synapse</span> within the last seven days. If the resulting page does not have any citations, paste the web address into your reader anyway, and you will receive new citations next time <span class="Synapse_name">Synapse</span> is updated.</p>
+        </div>
            <table class="feeds">
 	           <thead>
 	               <tr>
@@ -119,38 +121,10 @@
 
 	<!-- START: searchForm -->
 
-	<div id="feedSearchForm">
 	   <h3>Author Citations Feeds</h3>
-
-			<form id="feed_search_form" method="post" action="/newsfeeds/search/">
-                <table class="feeds">
-                    <thead>
-                    <tr>
-                        <td>Author Search</td>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td>{{ form.author }}<br><span class="subtle">{% autoescape off %}{{ form.author.help_text }}{% endautoescape %}</span></td>
-                        {% if form.author.errors %}<td>{{ form.author.errors }}</td>{% endif %}
-                    </tr>
-                    <tr>
-                    <td>
-                    <input type="submit" value="    Search    ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="reset" value="    Clear    ">
-                    </td>
-                    </tr>
-                    </tbody>
-                </table>
-<!--
-				<div class="clearLeft">&nbsp;</div>
-				<div class="clearBoth"><p><input type="submit" value="    Search    ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="reset" value="    Clear    "></p><br></div>
--->
-			</form>
 			<div class="expandable">
             <p>Author feeds provide all citations in <span class="Synapse_name">Synapse</span> for one or more authors, and will update automatically when new citations by the author(s) are added to the database. Use the search form above to find the feed for an author or authors.</p>
             </div>
-
-	</div>
 	{% if results %}
 	<div id="feedSearchResults">
 	<h3>Individual Author News Feed</h3>
@@ -195,7 +169,36 @@
     </table>
 
 	</div>
+	<br>
 	{% endif %}
+	<div id="feedSearchForm">
+
+			<form id="feed_search_form" method="post" action="/newsfeeds/search/">
+                <table class="feeds">
+                    <thead>
+                    <tr>
+                        <td>Author Search</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>{{ form.author }}<br><span class="subtle">{% autoescape off %}{{ form.author.help_text }}{% endautoescape %}</span></td>
+                        {% if form.author.errors %}<td>{{ form.author.errors }}</td>{% endif %}
+                    </tr>
+                    <tr>
+                    <td>
+                    <input type="submit" value="    Search    ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="reset" value="    Clear    ">
+                    </td>
+                    </tr>
+                    </tbody>
+                </table>
+<!--
+				<div class="clearLeft">&nbsp;</div>
+				<div class="clearBoth"><p><input type="submit" value="    Search    ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="reset" value="    Clear    "></p><br></div>
+-->
+			</form>
+
+	</div>
 	   <h3>News Feeds by Document Type</h3>
 	   <p>Below we offer newsfeeds for each type of document.  </p>
 	       <table class="feeds">
