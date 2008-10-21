@@ -97,33 +97,11 @@
         links, and you can also subscribe to news feeds in specialized news reader software, or web applications designed to handle news feed reading and aggregation.  
         </p>
         </div>
-        
-        <h3>Latest Citations Feed</h3>
-        <div class="expandable">
-        <p>The <a href="/feeds/latest/" rel="feed">Latest Citations</a> feed provides citations for all documents added to <span class="Synapse_name">Synapse</span> within the last seven days. If the resulting page does not have any citations, paste the web address into your reader anyway, and you will receive new citations next time <span class="Synapse_name">Synapse</span> is updated.</p>
-        </div>
-           <table class="feeds">
-	           <thead>
-	               <tr>
-                       <td>Feed Type</td>
-                       <td>URL</td>
-                       <td>&nbsp;</td>
-                    </tr>
-	           </thead>
-	           <tbody>
-	               <tr>
-	                   <td><a href="/feeds/latest/">Latest Citations</a></td>
-	                   <td><a href="/feeds/latest/">http://synapse.mskcc.org/feeds/latest/</a></td>
-	                   <td><a href="/feeds/latest/"><img src="/media/images/feed.png" alt="Newsfeed Icon" width="16" height="16"></a></td>
-	               </tr>
-	           </tbody>
-	       </table>
-
 	<!-- START: searchForm -->
 
 	   <h3>Author Citations Feeds</h3>
 			<div class="expandable">
-            <p>Author feeds provide all citations in <span class="Synapse_name">Synapse</span> for one or more authors, and will update automatically when new citations by the author(s) are added to the database. Use the search form above to find the feed for an author or authors.</p>
+            <p>Author feeds provide all citations in <span class="Synapse_name">Synapse</span> for one or more authors, and will update automatically when new citations by the author(s) are added to the database. Use the search form below to find the feed for an author or authors.</p>
             </div>
 	{% if results %}
 	<div id="feedSearchResults">
@@ -139,9 +117,9 @@
             <tbody>
                 {% for result in results %}
                 <tr>
-                    <td><a href="/feeds/author/{{ result.id }}/" title="Feed for {{ result.first_name }} {{ result.last_name }}">{{ result.first_name }} {{ result.last_name }}</a></td>
-                    <td><a href="/feeds/author/{{ result.id }}/" title="Feed for {{ result.first_name }} {{ result.last_name }}">http://synapse.mskcc.org/feeds/author/{{ result.id }}/</a></td>
-                    <td><a href="/feeds/author/{{ result.id }}/" title="Feed for {{ result.first_name }} {{ result.last_name }}"><img src="/media/images/feed.png" alt="Newsfeed Icon" width="16" height="16"></a></td>
+                    <td><a href="/feeds/author/{{ result.id }}/" title="Your Results: Feed for {{ result.first_name }} {{ result.last_name }}">{{ result.first_name }} {{ result.last_name }}</a></td>
+                    <td><a href="/feeds/author/{{ result.id }}/" title="Your Results: Feed for {{ result.first_name }} {{ result.last_name }}">http://synapse.mskcc.org/feeds/author/{{ result.id }}/</a></td>
+                    <td><a href="/feeds/author/{{ result.id }}/" title="Your Results: Feed for {{ result.first_name }} {{ result.last_name }}"><img src="/media/images/feed.png" alt="Newsfeed Icon" width="16" height="16"></a></td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -199,6 +177,28 @@
 			</form>
 
 	</div>
+        
+        <h3>Latest Citations Feed</h3>
+        <div class="expandable">
+        <p>The <a href="/feeds/latest/" rel="feed">Latest Citations</a> feed provides citations for all documents added to <span class="Synapse_name">Synapse</span> within the last seven days. If the resulting page does not have any citations, paste the web address into your reader anyway, and you will receive new citations next time <span class="Synapse_name">Synapse</span> is updated.</p>
+        </div>
+           <table class="feeds">
+	           <thead>
+	               <tr>
+                       <td>Feed Type</td>
+                       <td>URL</td>
+                       <td>&nbsp;</td>
+                    </tr>
+	           </thead>
+	           <tbody>
+	               <tr>
+	                   <td><a href="/feeds/latest/">Latest Citations</a></td>
+	                   <td><a href="/feeds/latest/">http://synapse.mskcc.org/feeds/latest/</a></td>
+	                   <td><a href="/feeds/latest/"><img src="/media/images/feed.png" alt="Newsfeed Icon" width="16" height="16"></a></td>
+	               </tr>
+	           </tbody>
+	       </table>
+
 	   <h3>News Feeds by Document Type</h3>
 	   <p>Below we offer newsfeeds for each type of document.  </p>
 	       <table class="feeds">
