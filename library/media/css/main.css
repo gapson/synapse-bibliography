@@ -261,3 +261,10 @@ table.feeds tbody td {
 	background-color: #FFF;
 	vertical-align: top;
 }
+
+
+#rssicons {
+    display: inline;
+    list-style: none;
+    text-align: center;
+    }
