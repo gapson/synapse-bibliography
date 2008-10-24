@@ -263,7 +263,7 @@ table.feeds tbody td {
 }
 
 
-#rssicons {
+ul#rssicons {
     display: inline;
     list-style: none;
     text-align: center;
