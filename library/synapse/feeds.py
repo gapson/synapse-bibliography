@@ -1,5 +1,6 @@
-from django.contrib.syndication.feeds import Feed
+from django.contrib.syndication.feeds import Feed, FeedDoesNotExist
 from django.core.exceptions import ObjectDoesNotExist
+from django.http import Http404
 from library.synapse.models import Document, Employee, Publication
 
 from datetime import date
@@ -22,6 +23,13 @@ class LatestDocumentsByAuthor(Feed):
     # Should return the author specified
         if len(author) < 1:
             raise ObjectDoesNotExist
+#        print "author: ", author
+#        cleaned_author = []
+        for item in author:
+            try:
+                int(item)
+            except ValueError, e:
+                raise FeedDoesNotExist
         return Employee.objects.filter(id__in=author)
         
     def generate_plural_titles(self, title, obj):
@@ -62,7 +70,7 @@ class LatestDocumentsByAuthor(Feed):
 class LatestDocumentsByDocType(Feed):
     def get_object(self, doctype):
         if len(doctype) != 1:
-            raise ObjectDoesNotExist
+            raise FeedDoesNotExist
         # Need to parse the doctype, turn it into matching
         dt = doctype[0]
         doc_type = []
@@ -99,6 +107,8 @@ class LatestDocumentsByDocType(Feed):
             
         if not doc_type:
             raise ObjectDoesNotExist
+        elif doc_type not in Document.objects.values_list('document_type', flat=True).distinct():
+            raise FeedDoesNotExist
         return (dt, doc_type)
 
     def title(self, obj):
