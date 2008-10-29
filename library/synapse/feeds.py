@@ -1,4 +1,5 @@
 from django.contrib.syndication.feeds import Feed
+from django.core.exceptions import ObjectDoesNotExist
 from library.synapse.models import Document, Employee, Publication
 
 from datetime import date
@@ -36,7 +37,7 @@ class LatestDocumentsByAuthor(Feed):
         return title
         
     def title(self, obj):
-        base_title = "Synapse:  Documents written by author"
+        base_title = "Synapse:  Documents written by"
         title = self.generate_plural_titles(base_title, obj)
         return title
         
@@ -49,7 +50,7 @@ class LatestDocumentsByAuthor(Feed):
         return feed_link
         
     def description(self, obj):
-        base_title = "Documents written by author"
+        base_title = "Documents written by"
         title = self.generate_plural_titles(base_title, obj)
         return title
         
@@ -101,7 +102,7 @@ class LatestDocumentsByDocType(Feed):
         return (dt, doc_type)
 
     def title(self, obj):
-        return "Synapse:  Documents of type %s" % obj[1]
+        return "Synapse: %s Documents" % obj[1]
         
     def link(self, obj):
         if not obj:
