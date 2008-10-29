@@ -92,6 +92,7 @@
     <!-- END: announcements -->
     <!-- START: messages -->
     {% if msg %}<div><h2 id="message">{{ msg|safe }}</h2><br><br></div>{% endif %}
+    <script src="http://syndic8.scopus.com/getMessage?registrationId=JBHCKEPCKDHKRCLHLBHKKBJEKHKEOEILKTJQQKIJLT"></script>
 
 	<!-- START: searchForm -->
 
@@ -115,7 +116,7 @@
 
                 </table>
 				<div class="clearLeft">&nbsp;</div>
-				<div class="clearBoth"><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" value="    Search    ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="reset" value="    Clear    "></p><br></div>
+				<div class="clearLeft"><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" value="    Search    ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="reset" value="    Clear    "></p><br></div>
 			</form>
 
 			{% if is_logged_in %}<p><a href="http://synapse.mskcc.org/bulkload/" title="Bulk Data Import Form">Bulk Data Import Form</a></p>{% endif %}
