@@ -101,7 +101,7 @@ class TabularCheckboxSelectMultiple(forms.CheckboxSelectMultiple):
             cb = forms.CheckboxInput(final_attrs, check_test=lambda value: value in str_values)
             option_value = force_unicode(option_value)
             rendered_cb = cb.render(name, option_value)
-            output.append(u'<td><label>%s %s</label></td>' % (rendered_cb, escape(force_unicode(option_label))))
+            output.append(u'<td><label class="checkbox_label">%s %s</label></td>' % (rendered_cb, escape(force_unicode(option_label))))
             if not count % 4:
                 output.append(u'</tr><tr>')
         output.append(u'</tr></table>')
