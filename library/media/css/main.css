@@ -169,7 +169,7 @@ div#searchForm h2 {font-size: 1.4em; padding-bottom:0em; text-align: left; margi
 div#searchForm th, td { padding-top: 10px; }
 div#searchForm ul li {display: inline; }
 div#searchForm td {
-    padding-left: 30px;
+    padding-left: 10px;
     vertical-align: top;
     }
 span.subtle { font-size: small; color: #541805; }
