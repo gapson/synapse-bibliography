@@ -310,6 +310,9 @@ class CINAHLHandler(object):
             self.parser.handle_line(line)
         
         for record in self.parser.records:
+            if record.document_type == 'Article in Press':
+                continue
+
             record.clean()
             publisher = loader.create_publisher(record)
             source = loader.create_source(record, publisher)

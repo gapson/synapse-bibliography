@@ -179,6 +179,9 @@ class EndNoteParser(object):
         self.create_records()
         
         for record in self.records:
+            if record.document_type == 'Article in Press':
+                continue
+
             publisher = loader.create_publisher(record)
             source = loader.create_source(record, publisher)
             loader.associate_publisher_and_source(publisher, source)
