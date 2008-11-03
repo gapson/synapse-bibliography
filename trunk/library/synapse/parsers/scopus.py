@@ -181,6 +181,8 @@ class ScopusParser(object):
             self.records.append(self.create_record(row))
             
         for record in self.records:
+            if record.document_type == 'Article in Press':
+                continue
             publisher = loader.create_publisher(record)
             source = loader.create_source(record, publisher)
             loader.associate_publisher_and_source(publisher, source)

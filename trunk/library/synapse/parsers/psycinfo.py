@@ -326,6 +326,9 @@ class PSYCINFOHandler(object):
             self.parser.handle_line(line)
         
         for record in self.parser.records:
+            if record.document_type == 'Article in Press':
+                continue
+
             record.clean()
 #            print "record: ", record
 #            print record.__dict__.items()
