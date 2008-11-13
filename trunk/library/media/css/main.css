@@ -343,3 +343,8 @@ label.checkbox_label {
 .horizontal_menu {
     font-size: 1.0em;
     }
+    
+.tip {
+    font-size: 0.8em;
+    font-weight: 600;
+    }
