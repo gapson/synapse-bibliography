@@ -105,6 +105,7 @@ def map_document_type(document_type):
                  'Meeting':'Conference Paper',
                  'Meeting Abstract':'Conference Paper',
                  'Conference Proceedings':'Conference Paper',
+                 'Proceedings Paper':'Conference Paper',
                  'Book; Meeting; Book Chapter':'Conference Paper',
                  'Erratum':'Other',
                  'Correction, Addition':'Other',
