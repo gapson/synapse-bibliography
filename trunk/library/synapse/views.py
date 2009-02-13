@@ -30,7 +30,6 @@ from django.core.paginator import InvalidPage
 from django.core.paginator import QuerySetPaginator
 from django.db.models import Q
 
-from rest import RESTView
 from util import BulkParserDispatcher
 from search import search_all
 
