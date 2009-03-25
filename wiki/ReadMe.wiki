@@ -9,14 +9,14 @@ The synapse-bibliography project is a fully-fledged Django site.  It is *not* a 
 
 Synapse-the-MSKCC-site will be adding user registration and authentication via LDAP from Active Directory.  This feature will allow for per-user customization, including saved "favorites", saved searches, and individual submission of articles by the users, for review by the librarians.  It will also allow us to put some controls in place on the REST API, which is half-finished at present.
 
-Synapse-the-Django-app doesn't currently exist.  However, I do plan to refactor out the application from the surrounding project.  At which point, I will likely create a new Google Code project to host the standalone app, and pull it in to the Synapse site via svn externals.  The Synapse site will likely become a [http://pinaxproject.com Pinax] social networking site at that point.
+Synapse-the-pluggable-reusable-Django-app doesn't currently exist.  However, I do plan to factor out the bibliography application from the surrounding project.  At which point, I will likely create a new Google Code project to host the standalone app, and pull it in to the Synapse site via svn externals.  The MSKCC Synapse site will likely become a [http://pinaxproject.com Pinax] social networking site at that point.
 
 
 = Dependencies =
 
 Currently, the Synapse site has a few external dependencies:
   * [http://erlug.linux.it/~da/soft/iplib/ iplib] -- tested with v1.0, current version is 1.1 and should probably work, but no guarantees
-  * jQuery, and a number of jQuery plugins:
+  * jQuery 1.2.x, and a number of jQuery plugins:
     * jqModal
     * autocomplete
     * columnmanager
@@ -38,4 +38,4 @@ The current Synapse site uses Google Analytics for web stats.  I've included a s
 
 = Final Note =
 
-The Synapse project is currently running on Django 1.0.2.  I took some time to update it for the 1.0 release.  I do expect to keep it up-to-date with the latest released version, and there are some new goodies in 1.1 I'm eagerly anticipating.  We'll see how much use gets made, initially, but going forward, expect to see feature additions that depend on the latest Django release.
+The Synapse project is currently running on Django 1.0.2.  I took some time to update it for the 1.0 release.  I do expect to keep it up-to-date with the latest released version, and there are some new goodies in 1.1 I'm eagerly anticipating.  We'll see how much use gets made, initially, but going forward, expect to see feature additions that depend on the latest Django release.  Backwards compatibility is not a huge priority.
